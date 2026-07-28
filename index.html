@@ -8,19 +8,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         :root {
-            --bg-color: #f4f7f6;
-            --sidebar-bg: #2c3e50;
-            --sidebar-text: #ecf0f1;
-            --primary-accent: #3498db;
-            --danger-color: #e74c3c;
-            --text-main: #333333;
+            --bg-color: #f8fafc;
+            --sidebar-bg: #0f172a;
+            --sidebar-text: #f1f5f9;
+            --primary-accent: #3b82f6;
+            --primary-hover: #2563eb;
+            --danger-color: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --text-main: #334155;
+            --border-radius: 12px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -31,34 +34,37 @@
             overflow: hidden;
         }
 
-        /* Sidebar Styling */
+        /* Left Sidebar Styling (Controls, Upload, Notes, Save) */
         .sidebar {
-            width: 320px;
+            width: 360px;
             background-color: var(--sidebar-bg);
             color: var(--sidebar-text);
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #1a252f;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            z-index: 20;
+            padding: 24px;
+            gap: 20px;
+            overflow-y: auto;
         }
 
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 2px solid var(--primary-accent);
-        }
-
-        .sidebar-header h2 {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+        .sidebar h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .upload-container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px dashed #bdc3c7;
+            background: #1e293b;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            border: 2px dashed #475569;
             text-align: center;
+            transition: border-color 0.2s;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--primary-accent);
         }
 
         .upload-container input[type="file"] {
@@ -68,121 +74,215 @@
         .upload-label {
             cursor: pointer;
             color: var(--primary-accent);
-            font-weight: bold;
+            font-weight: 600;
             display: block;
         }
-        
-        .upload-label:hover {
-            text-decoration: underline;
-        }
 
-        /* Error List in Sidebar */
-        .error-list-container {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .error-list-container h3 {
-            font-size: 1rem;
-            margin-bottom: 15px;
-            color: #bdc3c7;
-        }
-
-        .error-nav-item {
-            background: #34495e;
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            border-left: 4px solid var(--danger-color);
-            margin-bottom: 10px;
-            transition: background-color 0.2s ease;
-        }
-
-        .error-nav-item:hover {
-            background: #3b536b;
-        }
-
-        .error-nav-item .page-badge {
-            background: rgba(0,0,0,0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-right: 8px;
-            font-weight: bold;
-            color: #ecf0f1;
-        }
-
-        .error-nav-item .error-type {
-            font-weight: bold;
-            color: #e74c3c;
-            display: block;
-            margin-top: 5px;
+        .sidebar-page-info {
+            display: none;
+            padding: 10px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            text-align: center;
             font-size: 0.9rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .sidebar-page-info span {
+            color: var(--primary-accent);
         }
 
         #loadingState {
             display: none;
-            color: #f1c40f;
+            color: #fbbf24;
             font-size: 0.9rem;
-            margin-top: 10px;
-            font-weight: bold;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Notes and Save Section */
+        .controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .controls-group label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        textarea.design-notes {
+            width: 100%;
+            height: 120px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            color: #f1f5f9;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        textarea.design-notes:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+        }
+
+        .btn-save {
+            background-color: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .btn-save:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Right Sidebar Styling (Errors List) */
+        .right-sidebar {
+            width: 340px;
+            background-color: #ffffff;
+            border-left: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+            padding: 24px;
+            box-shadow: -4px 0 15px rgba(0,0,0,0.02);
+        }
+
+        .right-sidebar h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: #64748b;
+        }
+
+        .error-list-container {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .error-nav-item {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--danger-color);
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .error-nav-item:hover {
+            background: #f1f5f9;
+            transform: translateX(4px);
+        }
+
+        .error-nav-item .page-badge {
+            background: #e2e8f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 8px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .error-nav-item .error-type {
+            font-weight: 600;
+            color: #ef4444;
+            display: block;
+            margin-top: 6px;
+            font-size: 0.9rem;
         }
 
         /* Main Viewer Area */
         .main-content {
             flex-grow: 1;
             display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        /* Pagination Controls */
-        .pagination {
-            display: none; 
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            padding: 15px;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Side Navigation Arrows */
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-btn {
-            background-color: var(--primary-accent);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #475569;
+            transition: all 0.2s ease;
+            z-index: 10;
+            margin: 0 20px;
         }
 
-        .nav-btn:hover { background-color: #2980b9; }
-        .nav-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+        .nav-arrow:hover:not(:disabled) {
+            background: #f1f5f9;
+            transform: scale(1.05);
+            color: var(--primary-accent);
+        }
 
-        #pageInfo { font-weight: bold; font-size: 1.1rem; }
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        #pageInfo { 
+            position: absolute;
+            top: 20px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            color: #475569;
+        }
 
         /* Canvas Wrapper */
         .viewer-container {
             display: flex;
             justify-content: center;
-            padding: 30px;
+            align-items: center;
+            max-height: 100%;
+            max-width: calc(100% - 180px);
+            overflow: auto;
         }
 
         .page-wrapper {
             position: relative;
             display: inline-block;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             background: white;
+            border-radius: 4px;
         }
 
-        canvas { display: block; }
+        canvas { 
+            display: block; 
+            border-radius: 4px;
+        }
 
         .highlight-layer {
             position: absolute;
@@ -191,62 +291,75 @@
             pointer-events: none; 
         }
 
+        /* Highlight Styling (Slightly wider & taller on bottom) */
         .error-highlight {
             position: absolute;
-            background-color: rgba(231, 76, 60, 0.4); 
-            border: 2px solid var(--danger-color);
-            border-radius: 3px;
+            background-color: var(--danger-bg); 
+            border: 1.5px solid var(--danger-color);
+            border-radius: 4px;
             box-sizing: border-box;
             z-index: 10;
         }
 
         .error-label {
             position: absolute;
-            top: -22px;
+            top: -24px;
             left: -2px;
             background: var(--danger-color);
             color: white;
             font-size: 11px;
-            padding: 3px 6px;
-            border-radius: 3px;
+            padding: 4px 8px;
+            border-radius: 4px;
             white-space: nowrap;
-            font-weight: bold;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
 
-    <!-- LEFT SIDEBAR -->
+    <!-- LEFT SIDEBAR (Controls, Upload, Notes, Save) -->
     <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2>Visual QA Analyzer</h2>
-            <div class="upload-container">
-                <label for="pdfUpload" class="upload-label">
-                    📄 Upload Study Guide
-                </label>
-                <input type="file" id="pdfUpload" accept=".pdf" onchange="processPDF(event)">
-            </div>
-            <div id="loadingState">Scanning document for errors...</div>
+        <h2>Visual QA Analyzer</h2>
+        <div class="upload-container">
+            <label for="pdfUpload" class="upload-label">
+                + Upload Study Guide
+            </label>
+            <input type="file" id="pdfUpload" accept=".pdf" onchange="processPDF(event)">
+        </div>
+        
+        <div id="loadingState">Scanning document...</div>
+
+        <div id="sidebarPageInfo" class="sidebar-page-info">
+            Viewing Page <span id="sidebarCurrentPageNum">0</span> of <span id="sidebarTotalPages">0</span>
         </div>
 
-        <div class="error-list-container">
-            <h3>Found Errors</h3>
-            <div id="errorList">
-                <p style="color: #7f8c8d; font-size: 0.9rem;">Upload a PDF to scan for errors.</p>
-            </div>
+        <div class="controls-group">
+            <label for="designNotes">Design Team Notes</label>
+            <textarea id="designNotes" class="design-notes" placeholder="Type notes or corrective instructions for the design team here..."></textarea>
         </div>
+
+        <button class="btn-save" onclick="saveQAReport()">Save QA Report & Notes</button>
     </aside>
 
     <!-- RIGHT MAIN VIEWER -->
     <main class="main-content" id="mainArea">
-        <div class="pagination" id="paginationControls">
-            <button class="nav-btn" id="prevBtn" onclick="goPrevious()">&#8592; Prev</button>
-            <span id="pageInfo">Page <span id="currentPageNum">0</span> of <span id="totalPages">0</span></span>
-            <button class="nav-btn" id="nextBtn" onclick="goNext()">Next &#8594;</button>
-        </div>
-
+        <span id="pageInfo" style="display: none;">Page <span id="currentPageNum">0</span> of <span id="totalPages">0</span></span>
+        
+        <button class="nav-arrow" id="prevBtn" onclick="goPrevious()" style="display: none;">&#8592;</button>
+        
         <div class="viewer-container" id="pdfContainer"></div>
+        
+        <button class="nav-arrow" id="nextBtn" onclick="goNext()" style="display: none;">&#8594;</button>
     </main>
+
+    <!-- RIGHT SIDEBAR (Errors List) -->
+    <aside class="right-sidebar">
+        <h3>Found Errors</h3>
+        <div class="error-list-container" id="errorList">
+            <p style="color: #64748b; font-size: 0.9rem;">Upload a PDF to begin analysis.</p>
+        </div>
+    </aside>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -255,26 +368,6 @@
         let pageNum = 1;
         let isRendering = false;
         let documentErrors = []; 
-
-        // Centralized Dictionary for easy expansion
-        const errorDictionary = [
-            { match: "What is one area of life where", label: "Duplicate Question" },
-            { match: "1111", label: "Stray Text", exact: true },
-            { match: "attention and \"at ease", label: "Missing Quotation Mark" },
-            { match: "SOAR Through the Scripture:", label: "Header Typo (Singular)" },
-            { match: "Men, God has placed you in places", label: "Duplicate Paragraph" },
-            { regex: /Romans 12:9-1\b/, label: "Incomplete Verse Range" }
-        ];
-
-        // Core evaluation logic
-        function getErrorType(text) {
-            for (const error of errorDictionary) {
-                if (error.exact && text.trim() === error.match) return error.label;
-                if (error.match && text.includes(error.match)) return error.label;
-                if (error.regex && error.regex.test(text)) return error.label;
-            }
-            return null;
-        }
 
         async function processPDF(event) {
             const file = event.target.files[0];
@@ -287,7 +380,11 @@
             loading.style.display = 'block';
             errorList.innerHTML = '';
             container.innerHTML = '';
-            document.getElementById('paginationControls').style.display = 'none';
+            
+            document.getElementById('pageInfo').style.display = 'none';
+            document.getElementById('sidebarPageInfo').style.display = 'none';
+            document.getElementById('prevBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
             documentErrors = [];
 
             const reader = new FileReader();
@@ -300,57 +397,124 @@
                 
                 pageNum = 1;
                 document.getElementById('totalPages').innerText = pdfDoc.numPages;
-                document.getElementById('paginationControls').style.display = 'flex';
-                loading.style.display = 'none';
+                document.getElementById('sidebarTotalPages').innerText = pdfDoc.numPages;
                 
+                document.getElementById('pageInfo').style.display = 'block';
+                document.getElementById('sidebarPageInfo').style.display = 'block';
+                document.getElementById('prevBtn').style.display = 'flex';
+                document.getElementById('nextBtn').style.display = 'flex';
+                
+                loading.style.display = 'none';
                 renderCurrentPage();
             };
             
             reader.readAsArrayBuffer(file);
         }
 
-        // --- BACKGROUND SCANNER --- //
         async function scanDocumentForErrors() {
             const errorListElement = document.getElementById('errorList');
+            let expectedPageNumber = null;
 
             for (let i = 1; i <= pdfDoc.numPages; i++) {
                 const page = await pdfDoc.getPage(i);
+                const scale = 1.5; 
+                const viewport = page.getViewport({ scale: scale });
                 const textContent = await page.getTextContent();
                 
+                let fullPageText = "";
+                
                 textContent.items.forEach(item => {
-                    const errorType = getErrorType(item.str);
+                    fullPageText += item.str + " ";
+                    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+                    const cleanText = item.str.trim();
+                    const isFooter = tx[5] > viewport.height * 0.9;
+                    
+                    if (/^(\w)\1{3,}$/.test(cleanText)) {
+                        logError(i, 'Keystroke Anomaly', cleanText, errorListElement, item);
+                    }
 
-                    if (errorType) {
-                        documentErrors.push({ page: i, type: errorType, text: item.str });
+                    if (item.str.includes("What is one area of life where")) {
+                        logError(i, 'Duplicate Question', cleanText, errorListElement, item);
+                    }
+                    if (item.str.includes("Men, God has placed you in places")) {
+                        logError(i, 'Duplicate Paragraph', cleanText, errorListElement, item);
+                    }
+
+                    if (/(Lorem ipsum|\[.*?\]|\bTK\b|\bTBD\b)/i.test(cleanText)) {
+                        logError(i, 'Placeholder Text Found', cleanText, errorListElement, item);
+                    }
+
+                    if (/\b(?:[123]\s)?[A-Z][a-z]+\s\d{1,3}:\d{1,3}-1\b/.test(item.str)) {
+                        logError(i, 'Incomplete Verse Range', cleanText, errorListElement, item);
+                    }
+
+                    if (/^(Who|What|Where|When|Why|How)\b[^\?]+\.$/i.test(cleanText)) {
+                        logError(i, 'Missing Question Mark', cleanText, errorListElement, item);
+                    }
+
+                    if (/(,{2,}|\.{2}(?!\.))/.test(cleanText)) {
+                        logError(i, 'Double Punctuation', cleanText, errorListElement, item);
+                    }
+
+                    if (/\b(http|www\.)[^\s]*\b/i.test(cleanText)) {
+                        logError(i, 'URL Verification Needed', cleanText, errorListElement, item);
+                    }
+
+                    if (isFooter) {
+                        const footerNumber = parseInt(cleanText, 10);
                         
-                        const navItem = document.createElement('div');
-                        navItem.className = 'error-nav-item';
-                        navItem.innerHTML = `
-                            <div><span class="page-badge">Pg ${i}</span></div>
-                            <span class="error-type">${errorType}</span>
-                        `;
-                        
-                        navItem.onclick = () => {
-                            pageNum = i;
-                            renderCurrentPage();
-                        };
-                        
-                        errorListElement.appendChild(navItem);
+                        if (!isNaN(footerNumber)) {
+                            if (expectedPageNumber !== null && footerNumber !== expectedPageNumber) {
+                                logError(i, 'Pagination Error', `Expected ${expectedPageNumber}, found ${footerNumber}`, errorListElement, item);
+                            }
+                            expectedPageNumber = footerNumber + 1; 
+                        }
                     }
                 });
+
+                const leftQuotes = (fullPageText.match(/“/g) || []).length;
+                const rightQuotes = (fullPageText.match(/”/g) || []).length;
+                
+                if (leftQuotes !== rightQuotes) {
+                    logError(i, 'Unbalanced Quotes', `Found ${leftQuotes} left and ${rightQuotes} right`, errorListElement, null);
+                }
             }
 
             if (documentErrors.length === 0) {
-                errorListElement.innerHTML = '<p style="color: #2ecc71;">No errors found!</p>';
+                errorListElement.innerHTML = '<p style="color: #10b981; font-weight: 600;">No errors found!</p>';
             }
         }
 
-        // --- VISUAL RENDERER --- //
+        function logError(pageNumber, errorType, textSnippet, container, rawItem) {
+            documentErrors.push({ 
+                page: pageNumber, 
+                type: errorType, 
+                text: textSnippet, 
+                rawItem: rawItem 
+            });
+            
+            const navItem = document.createElement('div');
+            navItem.className = 'error-nav-item';
+            navItem.innerHTML = `
+                <div><span class="page-badge">Pg ${pageNumber}</span></div>
+                <span class="error-type">${errorType}</span>
+            `;
+            
+            navItem.onclick = () => {
+                pageNum = pageNumber;
+                renderCurrentPage();
+            };
+            
+            container.appendChild(navItem);
+        }
+
         async function renderCurrentPage() {
             if (isRendering || !pdfDoc) return;
             isRendering = true;
             
             document.getElementById('currentPageNum').innerText = pageNum;
+            document.getElementById('sidebarCurrentPageNum').innerText = pageNum;
+            
             document.getElementById('prevBtn').disabled = (pageNum <= 1);
             document.getElementById('nextBtn').disabled = (pageNum >= pdfDoc.numPages);
 
@@ -381,33 +545,29 @@
             const renderContext = { canvasContext: context, viewport: viewport };
             await page.render(renderContext).promise;
 
-            const textContent = await page.getTextContent();
+            const pageErrors = documentErrors.filter(e => e.page === pageNum && e.rawItem);
 
-            textContent.items.forEach(item => {
-                const errorType = getErrorType(item.str);
+            pageErrors.forEach(err => {
+                const tx = pdfjsLib.Util.transform(viewport.transform, err.rawItem.transform);
+                const fontHeight = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
 
-                if (errorType) {
-                    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
-                    const fontHeight = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
+                const highlightDiv = document.createElement('div');
+                highlightDiv.className = 'error-highlight';
+                
+                // Made slightly wider (-2px offset left, +4px width padding)
+                highlightDiv.style.left = `${tx[4] - 2}px`;
+                highlightDiv.style.top = `${tx[5] - fontHeight}px`; 
+                highlightDiv.style.width = `${(err.rawItem.width * scale) + 4}px`;
+                highlightDiv.style.height = `${fontHeight + 4}px`;
 
-                    const highlightDiv = document.createElement('div');
-                    highlightDiv.className = 'error-highlight';
-                    
-                    highlightDiv.style.left = `${tx[4]}px`;
-                    highlightDiv.style.top = `${tx[5] - fontHeight}px`; 
-                    highlightDiv.style.width = `${item.width * scale}px`;
-                    highlightDiv.style.height = `${fontHeight}px`;
+                const label = document.createElement('div');
+                label.className = 'error-label';
+                label.innerText = err.type;
+                highlightDiv.appendChild(label);
 
-                    const label = document.createElement('div');
-                    label.className = 'error-label';
-                    label.innerText = errorType;
-                    highlightDiv.appendChild(label);
-
-                    highlightLayer.appendChild(highlightDiv);
-                }
+                highlightLayer.appendChild(highlightDiv);
             });
 
-            document.getElementById('mainArea').scrollTop = 0;
             isRendering = false;
         }
 
@@ -421,6 +581,23 @@
             if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
             pageNum++;
             renderCurrentPage();
+        }
+
+        function saveQAReport() {
+            const notes = document.getElementById('designNotes').value;
+            const reportData = {
+                totalErrors: documentErrors.length,
+                designNotes: notes,
+                errors: documentErrors
+            };
+            
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'qa-report-and-notes.json';
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         document.addEventListener('keydown', function(event) {
