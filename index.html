@@ -7,45 +7,182 @@
     <!-- Load PDF.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        :root {
+            --bg-color: #f4f7f6;
+            --sidebar-bg: #2c3e50;
+            --sidebar-text: #ecf0f1;
+            --primary-accent: #3498db;
+            --danger-color: #e74c3c;
+            --text-main: #333333;
         }
 
-        .controls {
-            margin-bottom: 20px;
-            background: white;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #1a252f;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 2px solid var(--primary-accent);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .upload-container {
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 800px;
+            border-radius: 6px;
+            border: 1px dashed #bdc3c7;
             text-align: center;
         }
 
-        /* Container for all PDF pages */
-        #pdfContainer {
-            display: flex;
-            flex-direction: column;
-            gap: 20px; /* Space between pages */
-            align-items: center;
+        .upload-container input[type="file"] {
+            display: none;
+        }
+        
+        .upload-label {
+            cursor: pointer;
+            color: var(--primary-accent);
+            font-weight: bold;
+            display: block;
+        }
+        
+        .upload-label:hover {
+            text-decoration: underline;
         }
 
-        /* Wrapper for individual pages to hold canvas + highlights */
+        /* Error List in Sidebar */
+        .error-list-container {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .error-list-container h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+
+        .error-nav-item {
+            background: #34495e;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            border-left: 4px solid var(--danger-color);
+            margin-bottom: 10px;
+            transition: background-color 0.2s ease;
+        }
+
+        .error-nav-item:hover {
+            background: #3b536b;
+        }
+
+        .error-nav-item .page-badge {
+            background: rgba(0,0,0,0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+
+        .error-nav-item .error-type {
+            font-weight: bold;
+            color: #e74c3c;
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        #loadingState {
+            display: none;
+            color: #f1c40f;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Main Viewer Area */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Pagination Controls */
+        .pagination {
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background-color: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .nav-btn:hover { background-color: #2980b9; }
+        .nav-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+
+        #pageInfo { font-weight: bold; font-size: 1.1rem; }
+
+        /* Canvas Wrapper */
+        .viewer-container {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+
         .page-wrapper {
             position: relative;
             display: inline-block;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             background: white;
         }
 
-        canvas {
-            display: block; 
-        }
+        canvas { display: block; }
 
         .highlight-layer {
             position: absolute;
@@ -57,7 +194,7 @@
         .error-highlight {
             position: absolute;
             background-color: rgba(231, 76, 60, 0.4); 
-            border: 2px solid #e74c3c;
+            border: 2px solid var(--danger-color);
             border-radius: 3px;
             box-sizing: border-box;
             z-index: 10;
@@ -65,102 +202,180 @@
 
         .error-label {
             position: absolute;
-            top: -20px;
+            top: -22px;
             left: -2px;
-            background: #e74c3c;
+            background: var(--danger-color);
             color: white;
-            font-size: 10px;
-            padding: 2px 4px;
-            border-radius: 2px;
+            font-size: 11px;
+            padding: 3px 6px;
+            border-radius: 3px;
             white-space: nowrap;
-        }
-        
-        #loading {
-            display: none;
-            color: #3498db;
             font-weight: bold;
-            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="controls">
-        <h2>Visual Manuscript QA</h2>
-        <input type="file" id="pdfUpload" accept=".pdf" onchange="renderAndAnalyze(event)">
-        <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">Upload the study guide PDF to see visual error mapping.</p>
-        <div id="loading">Processing entire document... Please wait.</div>
-    </div>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Visual QA Analyzer</h2>
+            <div class="upload-container">
+                <label for="pdfUpload" class="upload-label">
+                    📄 Upload Study Guide
+                </label>
+                <input type="file" id="pdfUpload" accept=".pdf" onchange="processPDF(event)">
+            </div>
+            <div id="loadingState">Scanning document for errors...</div>
+        </div>
 
-    <div id="pdfContainer"></div>
+        <div class="error-list-container">
+            <h3>Found Errors</h3>
+            <div id="errorList">
+                <p style="color: #7f8c8d; font-size: 0.9rem;">Upload a PDF to scan for errors.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- RIGHT MAIN VIEWER -->
+    <main class="main-content" id="mainArea">
+        <div class="pagination" id="paginationControls">
+            <button class="nav-btn" id="prevBtn" onclick="goPrevious()">&#8592; Prev</button>
+            <span id="pageInfo">Page <span id="currentPageNum">0</span> of <span id="totalPages">0</span></span>
+            <button class="nav-btn" id="nextBtn" onclick="goNext()">Next &#8594;</button>
+        </div>
+
+        <div class="viewer-container" id="pdfContainer"></div>
+    </main>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        async function renderAndAnalyze(event) {
+        let pdfDoc = null;
+        let pageNum = 1;
+        let isRendering = false;
+        let documentErrors = []; // Store pre-scanned errors here
+
+        async function processPDF(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const loading = document.getElementById('loading');
+            const loading = document.getElementById('loadingState');
+            const errorList = document.getElementById('errorList');
             const container = document.getElementById('pdfContainer');
             
             loading.style.display = 'block';
-            container.innerHTML = ''; // Clear previous document
+            errorList.innerHTML = '';
+            container.innerHTML = '';
+            document.getElementById('paginationControls').style.display = 'none';
+            documentErrors = [];
 
             const reader = new FileReader();
             
             reader.onload = async function(e) {
                 const typedarray = new Uint8Array(e.target.result);
-                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                pdfDoc = await pdfjsLib.getDocument(typedarray).promise;
                 
-                // Loop through every page in the PDF
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    await analyzePage(pdf, i, container);
-                }
+                // Pre-scan the entire document to build the sidebar navigation
+                await scanDocumentForErrors();
                 
+                // Setup the UI and render the first page
+                pageNum = 1;
+                document.getElementById('totalPages').innerText = pdfDoc.numPages;
+                document.getElementById('paginationControls').style.display = 'flex';
                 loading.style.display = 'none';
+                
+                renderCurrentPage();
             };
             
             reader.readAsArrayBuffer(file);
         }
 
-        async function analyzePage(pdf, pageNumber, container) {
-            const page = await pdf.getPage(pageNumber);
+        // --- BACKGROUND SCANNER --- //
+        async function scanDocumentForErrors() {
+            const errorListElement = document.getElementById('errorList');
+
+            for (let i = 1; i <= pdfDoc.numPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const textContent = await page.getTextContent();
+                
+                textContent.items.forEach(item => {
+                    const isStrayNumber = item.str.includes("1111");
+                    const isDuplicateQuestion = item.str.includes("What is one area of life where");
+
+                    if (isStrayNumber || isDuplicateQuestion) {
+                        const errorType = isStrayNumber ? 'Stray Text (1111)' : 'Duplicate Question';
+                        
+                        // Save to our array
+                        documentErrors.push({
+                            page: i,
+                            type: errorType,
+                            text: item.str
+                        });
+                        
+                        // Add directly to the sidebar UI
+                        const navItem = document.createElement('div');
+                        navItem.className = 'error-nav-item';
+                        navItem.innerHTML = `
+                            <div><span class="page-badge">Pg ${i}</span></div>
+                            <span class="error-type">${errorType}</span>
+                        `;
+                        
+                        // Add click event to jump to that page
+                        navItem.onclick = () => {
+                            pageNum = i;
+                            renderCurrentPage();
+                        };
+                        
+                        errorListElement.appendChild(navItem);
+                    }
+                });
+            }
+
+            if (documentErrors.length === 0) {
+                errorListElement.innerHTML = '<p style="color: #2ecc71;">No errors found!</p>';
+            }
+        }
+
+        // --- VISUAL RENDERER --- //
+        async function renderCurrentPage() {
+            if (isRendering || !pdfDoc) return;
+            isRendering = true;
+            
+            document.getElementById('currentPageNum').innerText = pageNum;
+            document.getElementById('prevBtn').disabled = (pageNum <= 1);
+            document.getElementById('nextBtn').disabled = (pageNum >= pdfDoc.numPages);
+
+            const container = document.getElementById('pdfContainer');
+            container.innerHTML = ''; 
+
+            const page = await pdfDoc.getPage(pageNum);
             const scale = 1.5;
             const viewport = page.getViewport({ scale: scale });
 
-            // Create a wrapper for this specific page
             const pageWrapper = document.createElement('div');
             pageWrapper.className = 'page-wrapper';
             
-            // Create the canvas for this page
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            // Create the highlight layer for this page
             const highlightLayer = document.createElement('div');
             highlightLayer.className = 'highlight-layer';
             highlightLayer.style.width = `${viewport.width}px`;
             highlightLayer.style.height = `${viewport.height}px`;
 
-            // Append elements to the DOM
             pageWrapper.appendChild(canvas);
             pageWrapper.appendChild(highlightLayer);
             container.appendChild(pageWrapper);
 
-            // Render the PDF page to the canvas
-            const renderContext = {
-                canvasContext: context,
-                viewport: viewport
-            };
+            const renderContext = { canvasContext: context, viewport: viewport };
             await page.render(renderContext).promise;
 
-            // Extract Text and Coordinates
+            // Draw highlights for the CURRENT page
             const textContent = await page.getTextContent();
 
-            // Run Logic & Draw Highlights
             textContent.items.forEach(item => {
                 const isStrayNumber = item.str.includes("1111");
                 const isDuplicateQuestion = item.str.includes("What is one area of life where");
@@ -185,7 +400,32 @@
                     highlightLayer.appendChild(highlightDiv);
                 }
             });
+
+            // Scroll the main viewer to the top automatically when switching pages
+            document.getElementById('mainArea').scrollTop = 0;
+            isRendering = false;
         }
+
+        function goPrevious() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            renderCurrentPage();
+        }
+
+        function goNext() {
+            if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            renderCurrentPage();
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (!pdfDoc) return; 
+            if (event.key === 'ArrowLeft') {
+                goPrevious();
+            } else if (event.key === 'ArrowRight') {
+                goNext();
+            }
+        });
     </script>
 </body>
 </html>
