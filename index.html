@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual PDF QA Analyzer</title>
+    <!-- Load PDF.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        /* Container for all PDF pages */
+        #pdfContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between pages */
+            align-items: center;
+        }
+
+        /* Wrapper for individual pages to hold canvas + highlights */
+        .page-wrapper {
+            position: relative;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        canvas {
+            display: block; 
+        }
+
+        .highlight-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none; 
+        }
+
+        .error-highlight {
+            position: absolute;
+            background-color: rgba(231, 76, 60, 0.4); 
+            border: 2px solid #e74c3c;
+            border-radius: 3px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .error-label {
+            position: absolute;
+            top: -20px;
+            left: -2px;
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 2px;
+            white-space: nowrap;
+        }
+        
+        #loading {
+            display: none;
+            color: #3498db;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h2>Visual Manuscript QA</h2>
+        <input type="file" id="pdfUpload" accept=".pdf" onchange="renderAndAnalyze(event)">
+        <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">Upload the study guide PDF to see visual error mapping.</p>
+        <div id="loading">Processing entire document... Please wait.</div>
+    </div>
+
+    <div id="pdfContainer"></div>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        async function renderAndAnalyze(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('pdfContainer');
+            
+            loading.style.display = 'block';
+            container.innerHTML = ''; // Clear previous document
+
+            const reader = new FileReader();
+            
+            reader.onload = async function(e) {
+                const typedarray = new Uint8Array(e.target.result);
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                
+                // Loop through every page in the PDF
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    await analyzePage(pdf, i, container);
+                }
+                
+                loading.style.display = 'none';
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function analyzePage(pdf, pageNumber, container) {
+            const page = await pdf.getPage(pageNumber);
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale: scale });
+
+            // Create a wrapper for this specific page
+            const pageWrapper = document.createElement('div');
+            pageWrapper.className = 'page-wrapper';
+            
+            // Create the canvas for this page
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Create the highlight layer for this page
+            const highlightLayer = document.createElement('div');
+            highlightLayer.className = 'highlight-layer';
+            highlightLayer.style.width = `${viewport.width}px`;
+            highlightLayer.style.height = `${viewport.height}px`;
+
+            // Append elements to the DOM
+            pageWrapper.appendChild(canvas);
+            pageWrapper.appendChild(highlightLayer);
+            container.appendChild(pageWrapper);
+
+            // Render the PDF page to the canvas
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            await page.render(renderContext).promise;
+
+            // Extract Text and Coordinates
+            const textContent = await page.getTextContent();
+
+            // Run Logic & Draw Highlights
+            textContent.items.forEach(item => {
+                const isStrayNumber = item.str.includes("1111");
+                const isDuplicateQuestion = item.str.includes("What is one area of life where");
+
+                if (isStrayNumber || isDuplicateQuestion) {
+                    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+                    const fontHeight = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
+
+                    const highlightDiv = document.createElement('div');
+                    highlightDiv.className = 'error-highlight';
+                    
+                    highlightDiv.style.left = `${tx[4]}px`;
+                    highlightDiv.style.top = `${tx[5] - fontHeight}px`; 
+                    highlightDiv.style.width = `${item.width * scale}px`;
+                    highlightDiv.style.height = `${fontHeight}px`;
+
+                    const label = document.createElement('div');
+                    label.className = 'error-label';
+                    label.innerText = isStrayNumber ? 'Stray Text' : 'Duplicate Content';
+                    highlightDiv.appendChild(label);
+
+                    highlightLayer.appendChild(highlightDiv);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
