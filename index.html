@@ -254,7 +254,27 @@
         let pdfDoc = null;
         let pageNum = 1;
         let isRendering = false;
-        let documentErrors = []; // Store pre-scanned errors here
+        let documentErrors = []; 
+
+        // Centralized Dictionary for easy expansion
+        const errorDictionary = [
+            { match: "What is one area of life where", label: "Duplicate Question" },
+            { match: "1111", label: "Stray Text", exact: true },
+            { match: "attention and \"at ease", label: "Missing Quotation Mark" },
+            { match: "SOAR Through the Scripture:", label: "Header Typo (Singular)" },
+            { match: "Men, God has placed you in places", label: "Duplicate Paragraph" },
+            { regex: /Romans 12:9-1\b/, label: "Incomplete Verse Range" }
+        ];
+
+        // Core evaluation logic
+        function getErrorType(text) {
+            for (const error of errorDictionary) {
+                if (error.exact && text.trim() === error.match) return error.label;
+                if (error.match && text.includes(error.match)) return error.label;
+                if (error.regex && error.regex.test(text)) return error.label;
+            }
+            return null;
+        }
 
         async function processPDF(event) {
             const file = event.target.files[0];
@@ -276,10 +296,8 @@
                 const typedarray = new Uint8Array(e.target.result);
                 pdfDoc = await pdfjsLib.getDocument(typedarray).promise;
                 
-                // Pre-scan the entire document to build the sidebar navigation
                 await scanDocumentForErrors();
                 
-                // Setup the UI and render the first page
                 pageNum = 1;
                 document.getElementById('totalPages').innerText = pdfDoc.numPages;
                 document.getElementById('paginationControls').style.display = 'flex';
@@ -300,20 +318,11 @@
                 const textContent = await page.getTextContent();
                 
                 textContent.items.forEach(item => {
-                    const isStrayNumber = item.str.includes("1111");
-                    const isDuplicateQuestion = item.str.includes("What is one area of life where");
+                    const errorType = getErrorType(item.str);
 
-                    if (isStrayNumber || isDuplicateQuestion) {
-                        const errorType = isStrayNumber ? 'Stray Text (1111)' : 'Duplicate Question';
+                    if (errorType) {
+                        documentErrors.push({ page: i, type: errorType, text: item.str });
                         
-                        // Save to our array
-                        documentErrors.push({
-                            page: i,
-                            type: errorType,
-                            text: item.str
-                        });
-                        
-                        // Add directly to the sidebar UI
                         const navItem = document.createElement('div');
                         navItem.className = 'error-nav-item';
                         navItem.innerHTML = `
@@ -321,7 +330,6 @@
                             <span class="error-type">${errorType}</span>
                         `;
                         
-                        // Add click event to jump to that page
                         navItem.onclick = () => {
                             pageNum = i;
                             renderCurrentPage();
@@ -373,14 +381,12 @@
             const renderContext = { canvasContext: context, viewport: viewport };
             await page.render(renderContext).promise;
 
-            // Draw highlights for the CURRENT page
             const textContent = await page.getTextContent();
 
             textContent.items.forEach(item => {
-                const isStrayNumber = item.str.includes("1111");
-                const isDuplicateQuestion = item.str.includes("What is one area of life where");
+                const errorType = getErrorType(item.str);
 
-                if (isStrayNumber || isDuplicateQuestion) {
+                if (errorType) {
                     const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
                     const fontHeight = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
 
@@ -394,14 +400,13 @@
 
                     const label = document.createElement('div');
                     label.className = 'error-label';
-                    label.innerText = isStrayNumber ? 'Stray Text' : 'Duplicate Content';
+                    label.innerText = errorType;
                     highlightDiv.appendChild(label);
 
                     highlightLayer.appendChild(highlightDiv);
                 }
             });
 
-            // Scroll the main viewer to the top automatically when switching pages
             document.getElementById('mainArea').scrollTop = 0;
             isRendering = false;
         }
