@@ -886,7 +886,7 @@ function tapWord(e, el){
   e.stopPropagation();
   const key = el.dataset.word;
   if (!key) return;
-  const word = el.textContent.trim();
+  const word = el.textContent.trim().replace(/^[^A-Za-z']+/, '').replace(/[^A-Za-z']+$/, '');
   const already = el.classList.contains('flagged');
   if (already) {
     el.classList.remove('flagged');
