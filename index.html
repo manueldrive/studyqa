@@ -1171,10 +1171,33 @@ async function exportGuide(){
 
   try{
     const canvas = await html2canvas(target.firstElementChild, { scale: 2, backgroundColor: null, useCORS: true });
-    const link = document.createElement('a');
-    link.download = 'MS_Hang_SOAR_Guide.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    canvas.toBlob(async (blob) => {
+      if (!blob) { alert('Export failed. Please take a screenshot instead.'); return; }
+      const file = new File([blob], 'MS_Hang_SOAR_Guide.png', { type: 'image/png' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: 'MS Hang SOAR Guide' });
+          return;
+        } catch (shareErr) {
+          if (shareErr && shareErr.name === 'AbortError') return;
+        }
+      }
+
+      try {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = 'MS_Hang_SOAR_Guide.png';
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      } catch (downloadErr) {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      }
+    }, 'image/png');
   } catch(err){ alert('Export failed. Please take a screenshot instead.'); }
 }
 
