@@ -86,21 +86,16 @@
 
   .sub{ font-family:'Inter', sans-serif; font-size:16.5px; font-weight:800; line-height:1.42; opacity:.92; margin-top:10px; position:relative; z-index:2; }
   .folder-wrap{ margin-top:14px; display:flex; flex-direction:column; justify-content:flex-start; flex:1; position:relative; z-index:2; }
-  .folder-tab{ align-self:flex-start; margin-left:8px; background:#E4B563; border:3.5px solid var(--ink); border-bottom:none; border-radius:10px 10px 0 0; padding:6px 16px 8px 16px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink); position:relative; z-index:3; margin-bottom:-4px; flex-shrink:0; }
+  .folder-tab{ align-self:flex-start; margin-left:8px; background:#E4B563; border:3.5px solid var(--ink); border-bottom:none; border-radius:10px 10px 0 0; padding:6px 16px 8px 16px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12.5px; letter-spacing:1px; text-transform:uppercase; color:var(--ink); position:relative; z-index:3; margin-bottom:-4px; flex-shrink:0; }
   .folder-body{ display:flex; flex-direction:column; justify-content:space-evenly; background:#F3D48B; border:3.5px solid var(--ink); border-radius:3px 16px 16px 16px; box-shadow:5px 5px 0 var(--ink); padding:10px 18px; position:relative; z-index:2; flex-shrink:0; gap:10px; }
-  .stat-line{ display:flex; gap:14px; align-items:center; font-family:'Inter', sans-serif; font-size:13.5px; font-weight:800; line-height:1.45; padding:6px 0; color:var(--ink); }
-  .stat-line .bullet-icon{ font-size:17px; line-height:1; flex-shrink:0; width:40px; height:40px; border-radius:50%; background:var(--ink); color:#F3D48B; display:flex; align-items:center; justify-content:center; }
+  .stat-line{ display:flex; gap:14px; align-items:center; font-family:'Inter', sans-serif; font-size:16px; font-weight:800; line-height:1.48; padding:6px 0; color:var(--ink); }
+  .stat-line .bullet-icon{ font-size:19px; line-height:1; flex-shrink:0; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#F3D48B; display:flex; align-items:center; justify-content:center; }
   .stat-line em{ font-style:normal; color:#B0413E; }
 
   /* EXPAND / FULL-BLEED BOTTOM-LEFT GAUGE WITH FLUID, SMOOTH-DECELERATING TRANSITIONS */
   .zoom-stage{ flex:1; display:flex; flex-direction:column; min-height:0; position:relative; z-index:2; justify-content:space-between; }
   .zoom-caption{ font-family:'Inter',sans-serif; font-size:16.5px; font-weight:800; line-height:1.45; text-align:left; padding:8px 4px 0 4px; opacity:.96; position:relative; z-index:3; }
   .zoom-graphic{ flex:1; min-height:0; display:flex; align-items:flex-end; justify-content:flex-start; margin: 0 -20px -20px -20px; overflow:hidden; position:relative; }
-  
-  .beat.active .zoom-stage svg .arc-active{ animation:arcGlowIn .35s cubic-bezier(.2,.8,.25,1) both; }
-  .beat.active .zoom-stage svg .badge-active{ animation:badgeSmoothIn .35s cubic-bezier(.2,.8,.25,1) both; transform-origin:center; }
-  @keyframes arcGlowIn{ from{ opacity:.3; stroke-width:2px; } to{ opacity:1; stroke-width:5.5px; } }
-  @keyframes badgeSmoothIn{ from{ opacity:0; transform:translateY(3px); } to{ opacity:1; transform:translateY(0); } }
 
   /* COMPACT CROSS REFERENCES LAYOUT WITH TOP-RIGHT CONCENTRIC RINGS CALLBACK */
   .rings-bg{ position:absolute; top:-40px; right:-50px; width:220px; height:220px; z-index:0; pointer-events:none; }
@@ -161,9 +156,6 @@
   .quiz-tile.shake{ animation:shakeX .45s; }
 
   .passage-scroll-wrap{ flex:1; position:relative; min-height:0; display:flex; }
-  .def-popover{ position:absolute; z-index:50; max-width:240px; background:var(--ink); color:#FFF; font-family:'Inter',sans-serif; font-size:12px; font-weight:700; line-height:1.42; padding:10px 12px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.35); opacity:0; pointer-events:none; transform:translateY(4px); transition:opacity .15s ease, transform .15s ease; }
-  .def-popover.show{ opacity:1; transform:translateY(0); }
-  .def-popover .dp-word{ display:block; font-family:'Space Grotesk',sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--lime); font-size:11px; margin-bottom:3px; }
   .passage-scroll{ overflow-y:auto; flex:1; padding:16px 4px 4px 0; color:var(--ink); }
   .flow-para{ margin:0 0 16px 0; font-size:16.5px; line-height:1.65; font-family:'Inter',sans-serif; font-weight:700; }
   .verse-num-inline{ font-family:'Space Grotesk', sans-serif; font-weight:700; color:var(--purple); font-size:.65em; vertical-align:super; margin:0 2px 0 6px; }
@@ -379,7 +371,7 @@ const standardSwipeHint = `<div class="tap-hint swipe-hint" id="hintBox">
    FULL-BLEED BOTTOM-LEFT GAUGE WITH FLUID, SMOOTH-DECELERATING TRANSITIONS
    -------------------------------------------------------------------------- */
 function zoomRings(activeIdx){
-  const cx = 0, cy = 370;
+  const cx = 0, cy = 415;
   const radii = [105, 195, 290, 385];
   const labels = ['VERSE', 'PASSAGE', 'BOOK', 'BIBLE'];
   const midAngle = -45 * (Math.PI / 180);
@@ -434,7 +426,7 @@ function zoomRings(activeIdx){
   const centerNode = `<circle cx="${cx}" cy="${cy}" r="8" fill="var(--lime)" stroke="var(--ink)" stroke-width="2.5" />`;
 
   return `
-    <svg viewBox="0 0 380 380" width="100%" height="100%" preserveAspectRatio="none" style="overflow:visible;">
+    <svg viewBox="0 0 400 430" width="100%" height="100%" preserveAspectRatio="xMinYMax meet" style="overflow:visible;">
       <defs>
         <linearGradient id="edgeFadeGrad" x1="0%" y1="100%" x2="80%" y2="20%">
           <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
@@ -442,7 +434,7 @@ function zoomRings(activeIdx){
           <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.35" />
         </linearGradient>
         <mask id="arcTrailMask">
-          <rect x="-10" y="-10" width="450" height="450" fill="url(#edgeFadeGrad)" />
+          <rect x="-10" y="-10" width="430" height="460" fill="url(#edgeFadeGrad)" />
         </mask>
       </defs>
       ${arcsHTML}${badgesHTML}${centerNode}
@@ -555,7 +547,6 @@ const beats = [
             <div class="passage-scroll-wrap">
               <div class="passage-scroll" id="passageScrollEl">${passageWordsHTML()}</div>
               <div class="scroll-more-hint" id="scrollMoreHint"><i class="fa-solid fa-chevron-down"></i></div>
-              <div class="def-popover" id="defPopover"></div>
             </div>
           </div>
           <div class="pill-dock-integrated">
@@ -891,7 +882,6 @@ function questAnswer(e, el, gridId){
   }
 }
 
-let popTimer = null;
 function tapWord(e, el){
   e.stopPropagation();
   const key = el.dataset.word;
@@ -901,38 +891,12 @@ function tapWord(e, el){
   if (already) {
     el.classList.remove('flagged');
     state.wordTaps = state.wordTaps.filter(w => w.el !== el);
-    hideDefPopover();
   } else {
     const def = defs[key] || null;
     el.classList.add('flagged');
     state.wordTaps.push({ el, word, def });
-    if (def) showDefPopover(el, word, def); else hideDefPopover();
   }
   updateWordUI();
-}
-
-function showDefPopover(el, word, def){
-  const pop = document.getElementById('defPopover');
-  const wrapEl = pop ? pop.closest('.passage-scroll-wrap') : null;
-  if (!pop || !wrapEl) return;
-  pop.innerHTML = `<span class="dp-word">${word}</span>${def}`;
-  const wordRect = el.getBoundingClientRect();
-  const wrapRect = wrapEl.getBoundingClientRect();
-  const popWidth = 240;
-  let left = (wordRect.left - wrapRect.left) - 10;
-  left = Math.max(8, Math.min(left, wrapRect.width - popWidth - 8));
-  let top = (wordRect.bottom - wrapRect.top) + 8;
-  pop.style.left = left + 'px';
-  pop.style.top = Math.max(4, top) + 'px';
-  pop.classList.add('show');
-  clearTimeout(popTimer);
-  popTimer = setTimeout(hideDefPopover, 2800);
-}
-
-function hideDefPopover(){
-  clearTimeout(popTimer);
-  const pop = document.getElementById('defPopover');
-  if (pop) pop.classList.remove('show');
 }
 
 function updateWordUI(){ checkVocabComplete(); }
@@ -965,7 +929,6 @@ function checkPassageScroll(){
   const el = document.getElementById('passageScrollEl');
   const hint = document.getElementById('scrollMoreHint');
   if (!el) return;
-  hideDefPopover();
   const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
   if (atBottom && !state.scrolledToEnd) {
     state.scrolledToEnd = true;
