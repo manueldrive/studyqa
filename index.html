@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800;900&family=Inter:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0D0D0D;
@@ -75,25 +75,52 @@
   .intro-duration{ font-family:'Space Grotesk', sans-serif; font-size:13.5px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; opacity:.6; margin-top:16px; display:flex; align-items:center; gap:8px; }
 
   .hero-wrap{ flex:1; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:2; }
-  .kline{ overflow:hidden; }
-  .kword{ display:inline-block; opacity:0; transform:translateY(16px) scale(0.92); font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-1.5px; text-transform:uppercase; }
+  .kline{ overflow:hidden; margin-bottom:2px; }
+  .kline:last-child{ margin-bottom:0; }
+  .kword{ display:inline-block; opacity:0; transform:translateY(16px) scale(0.92); font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.3px; text-transform:uppercase; }
   .beat.active .kword{ animation:kwIn .5s cubic-bezier(.2,.85,.25,1) forwards; }
   @keyframes kwIn{ to{ opacity:1; transform:translateY(0) scale(1); } }
-  .hero-title .kword{ font-size:clamp(36px, 13vw, 56px); line-height:0.95; }
-  .hero-title.tight .kword{ font-size:clamp(28px, 10vw, 42px); }
-  .hero-title.xl .kword{ font-size:clamp(42px, 15vw, 66px); line-height:0.95; }
+  .hero-title .kword{ font-size:clamp(30px, 10.5vw, 44px); line-height:1.12; }
+  .hero-title.tight .kword{ font-size:clamp(23px, 7.6vw, 32px); line-height:1.18; }
+  .hero-title.xl .kword{ font-size:clamp(36px, 12.5vw, 54px); line-height:1.1; }
 
-  .sub{ font-family:'Inter', sans-serif; font-size:16px; font-weight:800; line-height:1.4; opacity:.94; margin-top:14px; position:relative; z-index:2; }
-  .folder-wrap{ margin-top:18px; display:flex; flex-direction:column; flex:1; position:relative; z-index:2; }
-  .folder-tab{ align-self:flex-start; margin-left:8px; background:#E4B563; border:3.5px solid var(--ink); border-bottom:none; border-radius:10px 10px 0 0; padding:7px 20px 10px 20px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12.5px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink); position:relative; z-index:3; margin-bottom:-4px; }
-  .folder-body{ flex:1; display:flex; flex-direction:column; justify-content:center; background:#F3D48B; border:3.5px solid var(--ink); border-radius:3px 16px 16px 16px; box-shadow:5px 5px 0 var(--ink); padding:6px 22px; position:relative; z-index:2; }
-  .stat-line{ display:flex; gap:18px; align-items:center; font-family:'Inter', sans-serif; font-size:14px; font-weight:800; line-height:1.45; padding:16px 0; border-bottom:2px dashed rgba(13,13,29,0.25); color:var(--ink); }
-  .stat-line:last-child{ border-bottom:none; }
-  .stat-line .bullet-icon{ font-size:19px; line-height:1; flex-shrink:0; width:44px; height:44px; border-radius:50%; background:var(--ink); color:#F3D48B; display:flex; align-items:center; justify-content:center; }
+  .sub{ font-family:'Inter', sans-serif; font-size:14px; font-weight:800; line-height:1.42; opacity:.92; margin-top:10px; position:relative; z-index:2; }
+  .folder-wrap{ margin-top:14px; display:flex; flex-direction:column; justify-content:flex-start; flex:1; position:relative; z-index:2; }
+  .folder-tab{ align-self:flex-start; margin-left:8px; background:#E4B563; border:3.5px solid var(--ink); border-bottom:none; border-radius:10px 10px 0 0; padding:6px 16px 8px 16px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--ink); position:relative; z-index:3; margin-bottom:-4px; flex-shrink:0; }
+  .folder-body{ display:flex; flex-direction:column; justify-content:space-evenly; background:#F3D48B; border:3.5px solid var(--ink); border-radius:3px 16px 16px 16px; box-shadow:5px 5px 0 var(--ink); padding:10px 18px; position:relative; z-index:2; flex-shrink:0; gap:10px; }
+  .stat-line{ display:flex; gap:14px; align-items:center; font-family:'Inter', sans-serif; font-size:13.5px; font-weight:800; line-height:1.45; padding:6px 0; color:var(--ink); }
+  .stat-line .bullet-icon{ font-size:17px; line-height:1; flex-shrink:0; width:40px; height:40px; border-radius:50%; background:var(--ink); color:#F3D48B; display:flex; align-items:center; justify-content:center; }
   .stat-line em{ font-style:normal; color:#B0413E; }
 
+  /* EXPAND / FULL-BLEED BOTTOM-LEFT GAUGE WITH FLUID, SMOOTH-DECELERATING TRANSITIONS */
+  .zoom-stage{ flex:1; display:flex; flex-direction:column; min-height:0; position:relative; z-index:2; justify-content:space-between; }
+  .zoom-caption{ font-family:'Inter',sans-serif; font-size:15px; font-weight:800; line-height:1.45; text-align:left; padding:8px 4px 0 4px; opacity:.96; position:relative; z-index:3; }
+  .zoom-graphic{ flex:1; min-height:0; display:flex; align-items:flex-end; justify-content:flex-start; margin: 0 -20px -20px -20px; overflow:hidden; position:relative; }
+  
+  .beat.active .zoom-stage svg .arc-active{ animation:arcGlowIn .35s cubic-bezier(.2,.8,.25,1) both; }
+  .beat.active .zoom-stage svg .badge-active{ animation:badgeSmoothIn .35s cubic-bezier(.2,.8,.25,1) both; transform-origin:center; }
+  @keyframes arcGlowIn{ from{ opacity:.3; stroke-width:2px; } to{ opacity:1; stroke-width:5.5px; } }
+  @keyframes badgeSmoothIn{ from{ opacity:0; transform:translateY(3px); } to{ opacity:1; transform:translateY(0); } }
+
+  /* COMPACT CROSS REFERENCES LAYOUT WITH TOP-RIGHT CONCENTRIC RINGS CALLBACK */
+  .rings-bg{ position:absolute; top:-40px; right:-50px; width:220px; height:220px; z-index:0; pointer-events:none; }
+  .rings-bg span{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); border-radius:50%; border:1.5px solid rgba(255,255,255,0.12); }
+  .rings-bg .r1{ width:220px; height:220px; }
+  .rings-bg .r2{ width:160px; height:160px; }
+  .rings-bg .r3{ width:105px; height:105px; }
+  .rings-bg .r4{ width:50px; height:50px; border-color:rgba(195,245,60,0.35); }
+
+  .xref-compact-list{ flex:1; display:flex; flex-direction:column; justify-content:space-evenly; gap:10px; position:relative; z-index:2; margin-top:4px; }
+  .xref-item{ display:flex; gap:13px; align-items:flex-start; position:relative; }
+  .xref-icon-node{ width:42px; height:42px; border-radius:50%; background:var(--lime); color:var(--ink); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; margin-top:2px; border:2.5px solid var(--ink); }
+  .xref-content{ flex:1; display:flex; flex-direction:column; gap:2px; }
+  .xref-meta-line{ display:flex; align-items:baseline; justify-content:flex-start; margin-bottom:2px; }
+  .xref-topic{ font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; color:var(--lime); }
+  .xref-body{ font-family:'Inter',sans-serif; font-size:12px; font-weight:700; line-height:1.45; color:rgba(255,255,255,0.92); }
+  .xref-body em{ font-style:normal; color:var(--lime); }
+
   /* SUBTLE NAVIGATION HINTS */
-  .tap-hint{ font-family:'Space Grotesk', sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; opacity:.85; margin-top:auto; text-align:center; padding-top:10px; position:relative; z-index:2; transition:all .2s ease; min-height:36px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .tap-hint{ font-family:'Space Grotesk', sans-serif; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; opacity:.85; margin-top:auto; text-align:center; padding-top:8px; position:relative; z-index:5; transition:all .2s ease; min-height:34px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
   .swipe-hint{ display:flex; align-items:center; justify-content:center; gap:22px; }
   .swipe-hint i{ font-size:18px; }
   .swipe-hint .fa-chevron-left{ animation:nudgeLeft 1.6s ease-in-out infinite; }
@@ -103,49 +130,57 @@
 
   .nav-subtle-caption{ font-family:'Space Grotesk', sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; opacity:.65; margin-top:4px; }
 
-  /* BIBLE DOCK BUTTON (OPAQUE UNTIL COMPLETED) */
+  /* BIBLE DOCK BUTTON */
   .pill-dock-integrated{ width:100%; margin-top:auto; position:relative; z-index:5; }
   .focus-pill-dock{ width:100%; border:3.5px solid var(--ink); border-radius:100px; padding:12px 18px; text-align:center; background:rgba(255,255,255,0.45); opacity:.6; box-shadow:3px 3px 0 rgba(13,13,13,0.3); cursor:pointer; transition:all .22s ease; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--ink); }
   .focus-pill-dock.ready{ opacity:1; background:var(--lime); box-shadow:4px 4px 0 var(--ink); }
+  #vocabPill.ready{ background:var(--yellow); }
   .focus-pill-dock.ready:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
   .focus-pill-dock.warn{ animation:shakeX .45s; background:var(--yellow) !important; opacity:1 !important; color:var(--ink) !important; border-color:var(--ink) !important; }
 
+  /* QUIZ GRID & TESTAMENT TILES */
   .quiz-grid{ display:flex; flex-direction:column; gap:11px; margin-top:6px; position:relative; z-index:2; overflow-y:auto; padding:2px 8px 8px 2px; }
-  .quiz-tile{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16px; background:#FFF; color:var(--ink); border:3.5px solid var(--ink); border-radius:16px; padding:13px 15px; cursor:pointer; transition:all .13s ease; box-shadow:4px 4px 0 var(--ink); }
+  .quiz-grid.fill-grid{ flex:1; }
+  .quiz-grid.fill-grid .quiz-tile{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+  .quiz-tile.testament-tile{ text-align:center; }
+  .quiz-tile.testament-tile .qt-title-big{ display:block; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:28px; margin-bottom:12px; }
+  .quiz-tile.testament-tile .qt-badge-under{ display:inline-block; font-family:'Space Grotesk',sans-serif; font-size:12.5px; font-weight:700; background:var(--ink); color:#FFF; padding:7px 16px; border-radius:100px; letter-spacing:.3px; margin-bottom:18px; }
+  .quiz-tile.testament-tile.correct .qt-badge-under, .quiz-tile.testament-tile.incorrect .qt-badge-under{ background:rgba(0,0,0,0.3); }
+  .quiz-tile.testament-tile .qt-desc-big{ display:block; font-family:'Inter',sans-serif; font-size:15px; font-weight:700; opacity:.75; line-height:1.45; max-width:270px; }
+  .quiz-tile{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:16.5px; background:#FFF; color:var(--ink); border:3.5px solid var(--ink); border-radius:16px; padding:13px 15px; cursor:pointer; transition:all .13s ease; box-shadow:4px 4px 0 var(--ink); }
   .quiz-tile:active{ transform:translate(2px,2px); box-shadow:0 0 0 var(--ink); }
   .quiz-tile .qt-desc{ display:block; font-family:'Inter',sans-serif; font-size:11.5px; font-weight:700; opacity:.7; margin-top:3px; text-transform:none; letter-spacing:0; }
+  .qt-row{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+  .qt-title{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16.5px; }
+  .qt-badge-inline{ font-family:'Space Grotesk',sans-serif; font-size:10px; font-weight:700; background:var(--ink); color:#FFF; padding:3px 9px; border-radius:100px; white-space:nowrap; flex-shrink:0; }
+  .quiz-tile.correct .qt-badge-inline, .quiz-tile.incorrect .qt-badge-inline{ background:rgba(0,0,0,0.25); }
   .quiz-tile.correct{ background:var(--lime) !important; color:var(--ink) !important; box-shadow:4px 4px 0 var(--ink) !important; }
   .quiz-tile.incorrect{ background:var(--pink) !important; color:#FFF !important; }
   .quiz-tile.locked{ pointer-events:none; }
   @keyframes shakeX{ 10%,90%{transform:translateX(-2px);} 20%,80%{transform:translateX(4px);} 30%,50%,70%{transform:translateX(-7px);} 40%,60%{transform:translateX(7px);} }
   .quiz-tile.shake{ animation:shakeX .45s; }
 
-  .feedback-box{ font-family:'Inter', sans-serif; font-size:13px; font-weight:800; margin-top:10px; padding:11px 13px; border-radius:14px; opacity:0; transition:opacity .15s ease; position:relative; z-index:2; flex-shrink:0; background:#FFF; color:var(--ink); border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink); min-height:64px; box-sizing:border-box; }
-  .feedback-box.show{ opacity:1; }
-  .feedback-box.good{ background:var(--lime); }
-  .feedback-box.bad{ background:var(--pink); color:#FFF; }
-
   .passage-scroll-wrap{ flex:1; position:relative; min-height:0; display:flex; }
-  .read-progress-track{ position:absolute; top:0; left:0; right:0; height:4px; background:rgba(13,13,29,0.12); z-index:4; border-radius:2px; overflow:hidden; }
-  .read-progress-fill{ height:100%; width:0%; background:var(--yellow); border-radius:2px; }
-  .def-popover{ position:absolute; z-index:50; max-width:230px; background:var(--ink); color:#FFF; font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700; line-height:1.4; padding:10px 12px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.35); opacity:0; pointer-events:none; transform:translateY(4px); transition:opacity .15s ease, transform .15s ease; }
+  .def-popover{ position:absolute; z-index:50; max-width:240px; background:var(--ink); color:#FFF; font-family:'Inter',sans-serif; font-size:12px; font-weight:700; line-height:1.42; padding:10px 12px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.35); opacity:0; pointer-events:none; transform:translateY(4px); transition:opacity .15s ease, transform .15s ease; }
   .def-popover.show{ opacity:1; transform:translateY(0); }
-  .def-popover .dp-word{ display:block; font-family:'Space Grotesk',sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--lime); font-size:11px; margin-bottom:3px; }
+  .def-popover .dp-word{ display:block; font-family:'Space Grotesk',sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--lime); font-size:11px; margin-bottom:3px; }
   .passage-scroll{ overflow-y:auto; flex:1; padding:16px 4px 4px 0; color:var(--ink); }
   .flow-para{ margin:0 0 16px 0; font-size:16.5px; line-height:1.65; font-family:'Inter',sans-serif; font-weight:700; }
   .verse-num-inline{ font-family:'Space Grotesk', sans-serif; font-weight:700; color:var(--purple); font-size:.65em; vertical-align:super; margin:0 2px 0 6px; }
   .w{ cursor:pointer; border-bottom:2px dotted rgba(13,13,13,0.35); padding:2px 1px; border-radius:3px; }
+  .w-plain{ padding:2px 1px; }
   .w.flagged{ background:var(--yellow); border-bottom-color:transparent; font-weight:900; }
 
+  .review-section-header{ font-family:'Space Grotesk', sans-serif; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:var(--ink); opacity:.75; margin:14px 0 6px 0; display:flex; align-items:center; gap:6px; }
+  .review-section-header:first-child{ margin-top:4px; }
   .review-card{ background:#FFF; border:3px solid var(--ink); border-radius:14px; padding:12px 14px; margin-bottom:10px; font-family:'Inter', sans-serif; font-size:13.5px; font-weight:700; line-height:1.4; box-shadow:3px 3px 0 var(--ink); color:var(--ink); position:relative; z-index:2; }
   .review-card b{ color:var(--purple); text-transform:capitalize; }
   .review-scroll{ flex:1; overflow-y:auto; position:relative; z-index:2; padding:2px 8px 8px 2px; }
   .pill-cloud{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
   .research-pill{ font-family:'Space Grotesk', sans-serif; font-size:12px; font-weight:700; background:var(--ink); color:#FFF; padding:7px 13px; border-radius:100px; text-transform:capitalize; }
-  .pill-cloud-label{ font-family:'Space Grotesk', sans-serif; font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; opacity:.7; margin:10px 0 2px 0; }
 
   .verse-pick-list{ overflow-y:auto; flex:1; margin-top:0; position:relative; z-index:2; padding:2px 4px 4px 0; }
-  .verse-tile{ display:flex; gap:9px; align-items:flex-start; padding:11px 8px; cursor:pointer; transition:background .13s ease; color:var(--ink); border-bottom:2px solid rgba(13,13,13,0.12); border-radius:10px; }
+  .verse-tile{ display:flex; gap:9px; align-items:flex-start; padding:11px 8px; cursor:pointer; transition:background .13s ease; color:var(--ink); border-bottom:2px solid rgba(13,13,29,0.12); border-radius:100px; }
   .verse-tile:last-child{ border-bottom:none; }
   .verse-tile.selected{ background:var(--lime); }
   .verse-tile .vnum{ font-family:'Space Grotesk', sans-serif; font-weight:700; color:var(--purple); flex-shrink:0; width:22px; }
@@ -155,32 +190,33 @@
   .dark-scripture-card .ref{ font-family:'Space Grotesk', sans-serif; font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--lime); margin-bottom:4px; }
   .dark-scripture-card .vt{ font-style:normal; font-family:'Inter',sans-serif; font-weight:700; font-size:13.5px; line-height:1.4; opacity:.95; }
 
-  /* LARGER CIRCLE HERO SLIDE */
-  .circle-hero-container{ position:relative; z-index:2; flex-shrink:0; display:flex; justify-content:center; margin:12px 0 8px 0; }
-  .circle-hero{ width:220px; height:220px; border-radius:50%; background:#FFF; color:var(--ink); border:4px solid var(--ink); box-shadow:5px 5px 0 var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:18px; flex-shrink:0; }
-  .circle-hero .arc-stem-text{ font-family:'Space Grotesk', sans-serif; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; opacity:.6; margin-bottom:6px; }
-  .circle-hero .label-god-is{ font-family:'Space Grotesk', sans-serif; font-weight:800; font-size:26px; letter-spacing:-.5px; text-transform:uppercase; line-height:1; margin-bottom:10px; }
-  .blank-input{ width:88%; border:none; border-bottom:3.5px solid var(--ink); background:transparent; font-family:'Inter', sans-serif; font-size:16px; font-weight:800; text-align:center; outline:none; color:var(--purple); padding:2px 0; transition:all .2s ease; }
+  /* CIRCLE HERO SLIDE */
+  .circle-hero-container{ position:relative; z-index:2; flex-shrink:0; display:flex; justify-content:center; margin:8px 0; }
+  .circle-hero{ width:250px; height:250px; border-radius:50%; background:#FFF; color:var(--ink); border:4px solid var(--ink); box-shadow:6px 6px 0 var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; flex-shrink:0; }
+  .circle-hero .arc-stem-text{ font-family:'Space Grotesk', sans-serif; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; opacity:.65; margin-bottom:6px; }
+  .circle-hero .label-god-is{ font-family:'Space Grotesk', sans-serif; font-weight:800; font-size:28px; letter-spacing:-.5px; text-transform:uppercase; line-height:1; margin-bottom:12px; }
+  .blank-input{ width:88%; border:none; border-bottom:3.5px solid var(--ink); background:transparent; font-family:'Inter', sans-serif; font-size:18px; font-weight:800; text-align:center; outline:none; color:var(--purple); padding:2px 0; transition:all .2s ease; }
   .blank-input.ghost{ color:rgba(13,13,29,.35); font-style:italic; }
 
   .inline-tip{ margin-top:8px; margin-bottom:4px; position:relative; z-index:2; flex-shrink:0; color:var(--ink); opacity:0; transform:translateY(6px); transition:all .25s ease; }
   .inline-tip.show{ opacity:1; transform:translateY(0); }
-  .inline-tip .tip-text{ font-family:'Inter', sans-serif; font-size:12.5px; font-weight:700; line-height:1.4; }
+  .inline-tip .tip-text{ font-family:'Inter', sans-serif; font-size:12px; font-weight:700; line-height:1.4; }
   .inline-tip .tip-text b{ font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:.5px; }
 
   .breath-circle{ width:180px; height:180px; border-radius:50%; margin:26px auto; background:var(--purple); border:4px solid var(--ink); animation:breathe 5s ease-in-out infinite; position:relative; z-index:2; flex-shrink:0; }
   @keyframes breathe{ 0%,100%{ transform:scale(0.85); background:var(--purple); } 50%{ transform:scale(1.15); background:var(--lime); } }
-  .breath-text{ font-family:'Inter', sans-serif; font-size:18.5px; font-weight:800; line-height:1.5; text-align:center; position:relative; z-index:2; max-width:340px; margin:0 auto; }
+  .breath-text{ font-family:'Inter', sans-serif; font-size:17.5px; font-weight:800; line-height:1.5; text-align:center; position:relative; z-index:2; max-width:340px; margin:0 auto; }
 
   .final-card{ background:#FFF; color:var(--ink); border:4px solid var(--ink); border-radius:22px; padding:18px; position:relative; z-index:2; overflow-y:auto; flex:1; box-shadow:5px 5px 0 var(--ink); display:flex; flex-direction:column; }
   .final-card .fhdr{ display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
-  .final-card .fhdr .fbadge{ font-family:'Space Grotesk',sans-serif; font-size:9px; font-weight:700; background:var(--lime); border:2px solid var(--ink); padding:4px 10px; border-radius:100px; }
+  .final-card .fhdr .fbadge{ font-family:'Space Grotesk',sans-serif; font-size:9px; font-weight:700; background:var(--lime); border:2px solid var(--ink); padding:4px 10px; border-radius:100px; text-transform:uppercase; }
   .final-card .flabel{ font-family:'Space Grotesk', sans-serif; font-size:10.5px; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; color:#666; margin-bottom:5px; margin-top:13px; }
   .final-card .flabel:first-child{ margin-top:0; }
   .word-chip-list{ display:flex; flex-direction:column; gap:6px; }
   .word-chip{ font-family:'Inter', sans-serif; font-size:12.5px; font-weight:700; line-height:1.4; }
   .word-chip b{ text-transform:capitalize; color:var(--pink); }
-  .challenge-box{ background:var(--yellow); border:3px solid var(--ink); border-radius:14px; padding:11px 13px; margin-top:6px; box-shadow:3px 3px 0 var(--ink); font-weight:700; }
+  .journal-prompt-box{ background:rgba(168,85,247,0.1); border:2px dashed var(--purple); border-radius:12px; padding:10px 12px; margin-top:6px; font-size:11.5px; font-weight:700; line-height:1.45; color:var(--ink); }
+  .challenge-box{ background:rgba(168,85,247,0.1); border:2px dashed var(--purple); border-radius:12px; padding:11px 13px; margin-top:6px; font-weight:700; font-size:11.5px; line-height:1.45; color:var(--ink); }
   .export-btn{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:15px; letter-spacing:.3px; text-transform:uppercase; background:var(--lime); color:var(--ink); border:4px solid var(--ink); border-radius:100px; padding:15px 0; width:100%; margin-top:16px; cursor:pointer; position:relative; z-index:2; flex-shrink:0; box-shadow:5px 5px 0 var(--ink); transition:all .15s ease; }
 
   /* BIBLE COVER CARDS */
@@ -211,7 +247,7 @@
       <div class="progress-bar-fill" id="progressBarFill"></div>
       <div class="notches-layer" id="notchesLayer"></div>
     </div>
-    <div class="story-meta"><span>MS Hang Prep</span><span>Mark 1:21–45</span></div>
+    <div class="story-meta"><span id="sectionLabel">Dwell</span><span>Mark 1:21–45</span></div>
   </div>
   <div class="stage" id="stage"></div>
 </div>
@@ -247,16 +283,27 @@ const passage = [
  "Instead he went out and began to talk freely, spreading the news. As a result, Jesus could no longer enter a town openly but stayed outside in lonely places. Yet the people still came to him from everywhere."
 ];
 
+/* THEOLOGICAL GLOSSARY WITH EXPANDED DEMON/SPIRIT DEFINITION (GFC UNSEEN SERIES) */
 const defs = {
   "sabbath":"The traditional Jewish day of rest and worship (Saturday).",
   "synagogue":"A Jewish house of prayer and community center for studying Scripture.",
-  "impure":"Unclean or fallen — referring here to a demon or fallen angel.",
-  "spirit":"Here referring to a demon; an evil entity operating in opposition to God.",
+  "impurespirit":"Another name for a demon — a created, fallen angel operating in spiritual rebellion under Satan's hierarchy. Real and deceptive, but finite: not all-powerful, all-knowing, or a match for Christ's authority.",
   "leprosy":"A severe skin disease causing social exclusion; sufferers were treated as outcasts (Leviticus 13).",
   "indignant":"Feeling deep anger or emotion at unfair treatment, sin, or disease.",
   "galilee":"The northern region of Israel where Jesus conducted much of His early ministry.",
-  "capernaum":"A bustling fishing village on the Sea of Galilee that served as Jesus's ministry hub."
+  "capernaum":"A bustling fishing village on the Sea of Galilee that served as Jesus's ministry hub.",
+  "jesusofnazareth":"Nazareth was a small, obscure village in Galilee — easy to overlook and looked down on by outsiders (John 1:46). Calling Jesus \"of Nazareth\" marked Him, by human standards, as an unlikely candidate for Messiah.",
+  "holyoneofgod":"A title acknowledging Jesus's divine identity and authority. It's notable that a demon says it first — even the spiritual realm recognized who Jesus was on sight."
 };
+
+/* Multi-word terms that should flag/define as a single unit rather than word-by-word.
+   Listed longest-first so a 4-word match is checked before shorter subsets could apply. */
+const phrases = [
+  { words:['holy','one','of','god'], key:'holyoneofgod' },
+  { words:['jesus','of','nazareth'], key:'jesusofnazareth' },
+  { words:['impure','spirit'], key:'impurespirit' },
+  { words:['impure','spirits'], key:'impurespirit' }
+];
 
 const state = { index:0, wordTaps:[], charVerse:null, trait:'', scrolledToEnd:false };
 let renderGen = 0;
@@ -268,6 +315,8 @@ function quoteVerse(text){
   return (startsWithQuote ? '' : '"') + text + (endsWithQuote ? '' : '"');
 }
 function normWord(w){ return w.replace(/[^a-zA-Z']/g,'').toLowerCase(); }
+
+const stopWords = new Set(['a','an','the','and','but','or','nor','for','so','yet','of','to','in','on','at','by','with','from','into','onto','up','out','off','over','under','again','then','than','as','is','am','are','was','were','be','been','being','he','she','it','they','him','her','them','his','its','their','this','that','these','those','who','whom','whose','which','what','i','you','we','me','us','my','your','our','not','no','all','any','some','there','here','when','where','why','how','went','come','came','said','say','says','saw','see','seen','got','get','gets','made','make','makes','took','take','taken','knew','know','known','told','tell','asked','ask','gave','give','given','put','let','called','call','began','begin','left','leave','found','find','ran','run','stood','stand','sat','sit','looked','look','walked','walk','brought','bring','heard','hear','felt','feel','thought','think','wanted','want','one','two','three','man','men','people','day','days','time','way','down','after','before','while','because','if','also','just','only','very','too','back','away','still','around','about','once','more','other','many','much']);
 
 function kw(lines, extraClass){
   let i = 0;
@@ -281,19 +330,34 @@ function kw(lines, extraClass){
   return `<div class="hero-title${extraClass ? ' '+extraClass : ''}">${body}</div>`;
 }
 
-const paragraphEnds = [28, 31, 34, 39, 44, 45]; // verse indices mapped to NIV paragraph breaks
+const paragraphEnds = [28, 31, 34, 39, 44, 45];
 
 function passageWordsHTML(){
   let out = '<p class="flow-para">';
   passage.forEach((v,i)=>{
     const verseNum = i + 21;
     const words = v.split(/\s+/);
-    const spans = words.map((w,wi)=>{
-      const norm = normWord(w);
+    const normed = words.map(normWord);
+    const pieces = [];
+    let wi = 0;
+    while (wi < words.length) {
       const marker = wi === 0 ? `<span class="verse-num-inline">${verseNum}</span>` : '';
-      return `${marker}<span class="w" data-word="${norm}" onclick="tapWord(event,this)">${w}</span>`;
-    }).join(' ');
-    out += spans + ' ';
+      const match = phrases.find(p => p.words.every((pw,k) => normed[wi+k] === pw));
+      if (match) {
+        const span = words.slice(wi, wi + match.words.length).join(' ');
+        pieces.push(`${marker}<span class="w" data-word="${match.key}" onclick="tapWord(event,this)">${span}</span>`);
+        wi += match.words.length;
+        continue;
+      }
+      const norm = normed[wi];
+      if (stopWords.has(norm)) {
+        pieces.push(`${marker}<span class="w-plain">${words[wi]}</span>`);
+      } else {
+        pieces.push(`${marker}<span class="w" data-word="${norm}" onclick="tapWord(event,this)">${words[wi]}</span>`);
+      }
+      wi++;
+    }
+    out += pieces.join(' ') + ' ';
     if (paragraphEnds.includes(verseNum) && verseNum !== 45) out += '</p><p class="flow-para">';
   });
   out += '</p>';
@@ -311,55 +375,156 @@ const standardSwipeHint = `<div class="tap-hint swipe-hint" id="hintBox">
   <div class="swipe-hint"><i class="fa-solid fa-chevron-left"></i><i class="fa-solid fa-chevron-right"></i></div>
 </div>`;
 
+/* --------------------------------------------------------------------------
+   FULL-BLEED BOTTOM-LEFT GAUGE WITH FLUID, SMOOTH-DECELERATING TRANSITIONS
+   -------------------------------------------------------------------------- */
+function zoomRings(activeIdx){
+  const cx = 0, cy = 370;
+  const radii = [105, 195, 290, 385];
+  const labels = ['VERSE', 'PASSAGE', 'BOOK', 'BIBLE'];
+  const midAngle = -45 * (Math.PI / 180);
+
+  function getArcD(r) {
+    const sx = cx + r;
+    const sy = cy;
+    const ex = cx;
+    const ey = cy - r;
+    return `M ${sx} ${sy} A ${r} ${r} 0 0 0 ${ex} ${ey}`;
+  }
+
+  let arcsHTML = '';
+  radii.forEach((r, i) => {
+    const active = i === activeIdx;
+    const baseOpacity = active ? 1 : Math.max(0.12, 0.45 - (i * 0.09));
+    arcsHTML += `<path class="${active ? 'arc-active' : 'arc-dim'}" d="${getArcD(r)}" fill="none" 
+      stroke="${active ? 'var(--lime)' : 'rgba(255,255,255,0.32)'}" 
+      stroke-width="${active ? 5.5 : 2}" 
+      opacity="${baseOpacity}" 
+      mask="url(#arcTrailMask)"
+      style="transition: all .35s cubic-bezier(.2,.8,.25,1);" />`;
+  });
+
+  let badgesHTML = '';
+  radii.forEach((r, i) => {
+    const active = i === activeIdx;
+    const lx = cx + r * Math.cos(midAngle);
+    const ly = cy + r * Math.sin(midAngle);
+
+    if (active) {
+      badgesHTML += `
+        <g class="badge-active" style="filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));">
+          <rect x="${lx - 46}" y="${ly - 16}" width="92" height="32" rx="16" fill="var(--lime)" stroke="#0D0D0D" stroke-width="2.5" />
+          <text x="${lx}" y="${ly + 4.5}" fill="#0D0D0D" font-family="'Space Grotesk',sans-serif" font-weight="900" font-size="11.5px" text-anchor="middle" letter-spacing="1.2px">${labels[i]}</text>
+        </g>
+      `;
+    } else {
+      const textOp = Math.max(0.25, 0.5 - (i * 0.08));
+      badgesHTML += `<text x="${lx + 6}" y="${ly - 6}" fill="rgba(255,255,255,${textOp})" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="9.5px" letter-spacing="1px">${labels[i]}</text>`;
+    }
+  });
+
+  const centerNode = `<circle cx="${cx}" cy="${cy}" r="8" fill="var(--lime)" stroke="var(--ink)" stroke-width="2.5" />`;
+
+  return `
+    <svg viewBox="0 0 380 380" width="100%" height="100%" preserveAspectRatio="none" style="overflow:visible;">
+      <defs>
+        <linearGradient id="edgeFadeGrad" x1="0%" y1="100%" x2="80%" y2="20%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
+          <stop offset="70%" stop-color="#FFFFFF" stop-opacity="0.9" />
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.35" />
+        </linearGradient>
+        <mask id="arcTrailMask">
+          <rect x="-10" y="-10" width="450" height="450" fill="url(#edgeFadeGrad)" />
+        </mask>
+      </defs>
+      ${arcsHTML}${badgesHTML}${centerNode}
+    </svg>
+  `;
+}
+
+const expandUniversalCaption = "Before we zoom in to find a verse that shows God's character, let's zoom out and see how this passage fits in with other books in the Bible.";
+
 const beats = [
   { id:'intro', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-lime)', text:'dark', align:'start',
-    html:`<div class="hero-wrap">
-            <div class="intro-top-title">MS Hang Prep</div>
+    html:`<div class="emoji">👋</div><div class="hero-wrap">
             ${kw([["MARK"],["1:21–45"]],'xl')}
             <div class="intro-duration"><i class="fa-regular fa-clock"></i> Prep Duration: 5 min</div>
           </div>
           <div class="tap-hint">
             <div class="swipe-hint"><i class="fa-solid fa-chevron-left"></i><i class="fa-solid fa-chevron-right"></i></div>
-            <div class="nav-subtle-caption">&lt; Swipe to navigate &gt;</div>
+            <div class="nav-subtle-caption">Swipe to navigate</div>
           </div>` },
 
-  { id:'quest-demons', type:'input', blockTap:true, isInteractive:true, clue:'Pick an answer', bgGrad:'var(--bg-purple)', text:'light',
-    html:`<div class="kicker">EVALUATE</div>
-          <div class="hero-wrap" style="flex:0;">${kw([["WHAT","IS","A"],["DEMON'S"],["REAL","POWER?"]],'tight')}</div>
-          <div class="quiz-grid" id="questDemonGrid">
-            <div class="quiz-tile" data-correct="false" onclick="questAnswer(event,this,'questDemonGrid','fbDemons','','Not quite — scripture shows demons are limited and subject to Christ.')">
-              <div class="qt-row"><span class="qt-title">Equal to God</span></div>
-              <span class="qt-desc">All-powerful and all-knowing force of evil</span>
+  { id:'quest-testament', type:'input', blockTap:true, isInteractive:true, clue:'Pick an answer', bgGrad:'var(--bg-purple)', text:'light',
+    html:`<div class="hero-wrap" style="flex:0;">${kw([["WHICH","TESTAMENT"],["IS","THE","BOOK"],["OF","MARK","IN?"]],'tight')}</div>
+          <div class="quiz-grid fill-grid" id="questTestamentGrid">
+            <div class="quiz-tile testament-tile" data-correct="false" onclick="questAnswer(event,this,'questTestamentGrid')">
+              <span class="qt-title-big">Old Testament</span>
+              <span class="qt-badge-under">39 books · 1000+ yrs in the making</span>
+              <span class="qt-desc-big">The Hebrew scriptures pointing toward a promised Messiah</span>
             </div>
-            <div class="quiz-tile" data-correct="true" onclick="questAnswer(event,this,'questDemonGrid','fbDemons','Right — demons are created fallen angels (~1/3). Jesus fights them with Scripture and total sovereignty.','')">
-              <div class="qt-row"><span class="qt-title">Fallen Angel</span></div>
-              <span class="qt-desc">Limited, created beings who counterfeit God's work</span>
-            </div>
-            <div class="quiz-tile" data-correct="false" onclick="questAnswer(event,this,'questDemonGrid','fbDemons','','Incorrect — spiritual evil is real, though limited in power.')">
-              <div class="qt-row"><span class="qt-title">Just a Metaphor</span></div>
-              <span class="qt-desc">A symbol for bad thoughts or general illness</span>
+            <div class="quiz-tile testament-tile" data-correct="true" onclick="questAnswer(event,this,'questTestamentGrid')">
+              <span class="qt-title-big">New Testament</span>
+              <span class="qt-badge-under">27 books · ~40 yrs in the making</span>
+              <span class="qt-desc-big">Jesus's life and the early church</span>
             </div>
           </div>
-          <div class="feedback-box" id="fbDemons"></div>
           ${standardSwipeHint}` },
 
+  { id:'quest-section', type:'input', blockTap:true, isInteractive:true, clue:'Pick an answer', bgGrad:'var(--bg-purple)', text:'light',
+    html:`<div class="hero-wrap" style="flex:0;">${kw([["WHICH","SECTION"],["OF","THE"],["NEW","TESTAMENT?"]],'tight')}</div>
+          <div class="quiz-grid" id="questSectionGrid">
+            <div class="quiz-tile" data-correct="true" onclick="questAnswer(event,this,'questSectionGrid')">
+              <div class="qt-row"><span class="qt-title">The Gospels</span><span class="qt-badge-inline">4 books</span></div>
+              <span class="qt-desc">Multiple accounts of Jesus's life, death, and resurrection</span>
+            </div>
+            <div class="quiz-tile" data-correct="false" onclick="questAnswer(event,this,'questSectionGrid')">
+              <div class="qt-row"><span class="qt-title">Church History</span><span class="qt-badge-inline">1 book</span></div>
+              <span class="qt-desc">The Holy Spirit's arrival and the church's growth</span>
+            </div>
+            <div class="quiz-tile" data-correct="false" onclick="questAnswer(event,this,'questSectionGrid')">
+              <div class="qt-row"><span class="qt-title">Paul's Letters</span><span class="qt-badge-inline">13 books</span></div>
+              <span class="qt-desc">Helping churches live out the gospel</span>
+            </div>
+            <div class="quiz-tile" data-correct="false" onclick="questAnswer(event,this,'questSectionGrid')">
+              <div class="qt-row"><span class="qt-title">General Letters</span><span class="qt-badge-inline">8 books</span></div>
+              <span class="qt-desc">Guidance for scattered early believers</span>
+            </div>
+            <div class="quiz-tile" data-correct="false" onclick="questAnswer(event,this,'questSectionGrid')">
+              <div class="qt-row"><span class="qt-title">Prophecy</span><span class="qt-badge-inline">1 book</span></div>
+              <span class="qt-desc">A visionary look at how it all ends</span>
+            </div>
+          </div>
+          ${standardSwipeHint}` },
+
+  /* FOLDER CONTEXT SLIDE WITH ESV STUDY BIBLE IN TAB & REFINED RECAP */
   { id:'reveal-context', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-pink)', text:'light', align:'start',
-    html:`<div class="kicker">DISCOVER</div>
-          <div class="hero-wrap" style="flex:0;">${kw([["TEACHING","WITH"],["AUTHORITY"]],'tight')}</div>
+    html:`<div class="hero-wrap" style="flex:0;">${kw([["SET","THE","SCENE"]],'tight')}
+          <div class="sub">Jesus <b>announces the Kingdom has come</b>, <b>recruits His disciples</b>, and dives into ministry. To feel why His authority stunned the crowds, see it through ancient eyes:</div>
+          </div>
           <div class="folder-wrap">
-            <div class="folder-tab">Mark 1:21–45</div>
+            <div class="folder-tab">ESV Study Bible</div>
             <div class="folder-body">
-              <div class="stat-line"><span class="bullet-icon"><i class="fa-solid fa-book-bible"></i></span><span>Rabbis appealed to <em>earlier rabbis</em>. Jesus spoke with direct, supreme authority and backed it up with power.</span></div>
-              <div class="stat-line"><span class="bullet-icon"><i class="fa-solid fa-hand-holding-medical"></i></span><span>Touching a leprosied person meant <em>ceremonial uncleanness</em>, but Jesus's touch brought purity instead!</span></div>
-              <div class="stat-line"><span class="bullet-icon"><i class="fa-solid fa-person-praying"></i></span><span>Despite demands from crowds, Jesus prioritized <em>solitary prayer</em> to stay mission-focused.</span></div>
+              <div class="stat-line">
+                <span class="bullet-icon"><i class="fa-solid fa-book-bible"></i></span>
+                <div>Rabbis normally taught by quoting <em>earlier, respected rabbis</em> — never with authority of their own.</div>
+              </div>
+              <div class="stat-line">
+                <span class="bullet-icon"><i class="fa-solid fa-ghost"></i></span>
+                <div>Jewish culture relied on <em>strange rituals to cast out spirits</em> with questionable success—casting out demons with a simple word was completely unprecedented.</div>
+              </div>
+              <div class="stat-line">
+                <span class="bullet-icon"><i class="fa-solid fa-hand-holding-medical"></i></span>
+                <div>Jewish law required lepers to live <em>outside the camp</em> — isolated, and considered ceremonially unclean.</div>
+              </div>
             </div>
           </div>
           ${standardSwipeHint}` },
 
   { id:'breath-prayer', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-cream)', text:'dark', align:'center',
-    html:`<div class="hero-wrap" style="align-items:center; text-align:center;">${kw([["TAKE","A"],["BREATH."]],'tight')}
+    html:`<div class="hero-wrap" style="align-items:center; text-align:center;">${kw([["BREATHE"]],'tight')}
           <div class="breath-circle"></div>
-          <div class="breath-text">"Jesus, You are in control of all things. Help me trust Your authority and share Your compassion this week."</div>
+          <div class="breath-text">"God, open my eyes to see who You are in this passage. Help me lead our students well."</div>
           </div>
           ${standardSwipeHint}` },
 
@@ -367,11 +532,11 @@ const beats = [
     html:`<div class="leather-cover">
             <div class="leather-spine"></div>
             <div class="leather-cover-inner">
-              <div class="book-title" style="margin-bottom:2px;">Mark 1:21–45</div>
+              <div class="book-title" style="margin-bottom:2px;">Holy Bible</div>
               <div class="focus-pill yellow">
-                <div class="focus-pill-value">Flag Key Words</div>
+                <div class="focus-pill-value">Flag Tricky Words</div>
               </div>
-              <div class="cover-note">Flag 2–4 terms (like Sabbath, Synagogue, or Leprosy) to break down for middle schoolers.</div>
+              <div class="cover-note">Students don't always know church lingo. Flag 2–4 tricky words you'll want to define before Sunday.</div>
             </div>
           </div>
           ${standardSwipeHint}` },
@@ -379,7 +544,6 @@ const beats = [
   { id:'vocab-scan', type:'input', blockTap:true, isInteractive:true, clue:'Flag a word & scroll to bottom', bgGrad:'var(--bg-cream)', text:'dark',
     html:`<div class="full-page">
             <div class="passage-scroll-wrap">
-              <div class="read-progress-track"><div class="read-progress-fill" id="readProgressFill"></div></div>
               <div class="passage-scroll" id="passageScrollEl">${passageWordsHTML()}</div>
               <div class="scroll-more-hint" id="scrollMoreHint"><i class="fa-solid fa-chevron-down"></i></div>
               <div class="def-popover" id="defPopover"></div>
@@ -392,20 +556,83 @@ const beats = [
           </div>` },
 
   { id:'vocab-review', type:'input', blockTap:false, isInteractive:false, bgGrad:'var(--bg-yellow)', text:'dark',
-    html:`<div class="kicker">Word Work</div>
-          <div class="hero-wrap" style="flex:0;">${kw([["VOCAB","TO"],["EXPLAIN."]],'tight')}</div>
+    html:`<div class="hero-wrap" style="flex:0;">${kw([["GLOSSARY"]],'tight')}</div>
           <div class="review-scroll" id="vocabReviewBox"></div>
+          ${standardSwipeHint}` },
+
+  /* EXPAND INTRO STAGES WITH SMOOTHED TRANSITIONS & NEW EXPAND COPY */
+  { id:'expand-zoom-verse', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-dark)', text:'light', align:'start',
+    html:`<div class="zoom-stage">
+            <div class="zoom-caption">${expandUniversalCaption}</div>
+            <div class="zoom-graphic">${zoomRings(0)}</div>
+          </div>
+          ${standardSwipeHint}` },
+
+  { id:'expand-zoom-passage', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-dark)', text:'light', align:'start',
+    html:`<div class="zoom-stage">
+            <div class="zoom-caption">${expandUniversalCaption}</div>
+            <div class="zoom-graphic">${zoomRings(1)}</div>
+          </div>
+          ${standardSwipeHint}` },
+
+  { id:'expand-zoom-book', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-dark)', text:'light', align:'start',
+    html:`<div class="zoom-stage">
+            <div class="zoom-caption">${expandUniversalCaption}</div>
+            <div class="zoom-graphic">${zoomRings(2)}</div>
+          </div>
+          ${standardSwipeHint}` },
+
+  { id:'expand-zoom-bible', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-dark)', text:'light', align:'start',
+    html:`<div class="zoom-stage">
+            <div class="zoom-caption">${expandUniversalCaption}</div>
+            <div class="zoom-graphic">${zoomRings(3)}</div>
+          </div>
+          ${standardSwipeHint}` },
+
+  /* FULL COPY ZERO-SCROLL CROSS REFERENCES SLIDE WITH SCRIPTURE CITATIONS AS HEADERS */
+  { id:'expand-cross-refs', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-dark)', text:'light', align:'start',
+    html:`<div class="rings-bg"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="r4"></span></div>
+          <div class="hero-wrap" style="flex:0;">${kw([["CROSS"],["REFERENCES"]],'tight')}</div>
+          <div class="xref-compact-list">
+            <div class="xref-item">
+              <div class="xref-icon-node"><i class="fa-solid fa-book-bible"></i></div>
+              <div class="xref-content">
+                <div class="xref-meta-line">
+                  <span class="xref-topic">Matthew 7:28–29 · Matthew 28:18</span>
+                </div>
+                <div class="xref-body">Matthew notes the crowd's amazement at Jesus's <em>real authority</em>, unlike the scribes who could only echo earlier masters — authority He later claims fully, over heaven and earth.</div>
+              </div>
+            </div>
+            <div class="xref-item">
+              <div class="xref-icon-node"><i class="fa-solid fa-ghost"></i></div>
+              <div class="xref-content">
+                <div class="xref-meta-line">
+                  <span class="xref-topic">Mark 1:24 · James 2:19 · Luke 4:36</span>
+                </div>
+                <div class="xref-body">The demon names Jesus <em>“the Holy One of God”</em> on sight — even demons recognize Him, James writes, and tremble. Luke adds the crowd was astonished by both His authority and power.</div>
+              </div>
+            </div>
+            <div class="xref-item">
+              <div class="xref-icon-node"><i class="fa-solid fa-hand-holding-medical"></i></div>
+              <div class="xref-content">
+                <div class="xref-meta-line">
+                  <span class="xref-topic">Leviticus 13:45–46 · Mark 1:41</span>
+                </div>
+                <div class="xref-body">Leviticus exiled lepers outside the camp, crying “unclean!” Jesus reverses that — His touch sends <em>purity and healing outward</em> instead of catching defilement.</div>
+              </div>
+            </div>
+          </div>
           ${standardSwipeHint}` },
 
   { id:'character-prompt', type:'tapAuto', isInteractive:false, bgGrad:'var(--bg-cream)', text:'dark', align:'start',
     html:`<div class="leather-cover">
             <div class="leather-spine"></div>
             <div class="leather-cover-inner">
-              <div class="book-title" style="margin-bottom:2px;">Mark 1:21–45</div>
+              <div class="book-title" style="margin-bottom:2px;">Holy Bible</div>
               <div class="focus-pill lime">
                 <div class="focus-pill-value">Spot a God Shot</div>
               </div>
-              <div class="cover-note">Choose a verse showing who God is (Holy, Love, King).</div>
+              <div class="cover-note">Help students identify a verse that speaks to who God is. When we learn His character, it transforms our character.</div>
             </div>
           </div>
           ${standardSwipeHint}` },
@@ -421,8 +648,7 @@ const beats = [
           </div>` },
 
   { id:'char-coaching', type:'input', blockTap:true, isInteractive:true, clue:'Fill in the blank', bgGrad:'var(--bg-lime)', text:'dark',
-    html:`<div class="kicker">Learn & Live</div>
-          <div class="dark-scripture-card">
+    html:`<div class="dark-scripture-card">
             <div class="ref" id="charRef"></div>
             <div class="vt" id="charText"></div>
           </div>
@@ -434,24 +660,56 @@ const beats = [
             </div>
           </div>
           <div class="inline-tip" id="coachBox">
-            <div class="tip-text"><b>LEADER TIP:</b> Remind students that Jesus isn't crowd-driven—He is purpose-driven! If we place our faith in Him, even when battling lies or illness, He remains in control.</div>
+            <div class="tip-text" id="coachBoxText"><b>TIP:</b> Have students look down at verse 5 and share what they think it reveals about God's character. Silence is okay—give it 7 seconds before jumping in.</div>
           </div>
           ${standardSwipeHint}` },
 
   { id:'final', type:'input', blockTap:true, isInteractive:false, bgGrad:'var(--bg-cream)', text:'dark', align:'start',
-    html:`<div class="emoji">🎉</div><div class="hero-wrap" style="flex:0;">${kw([["LEADER","READY."]],'tight')}</div>
+    html:`<div class="emoji">🎉</div><div class="hero-wrap" style="flex:0;">${kw([["WELL","DONE."]],'tight')}</div>
           <div class="final-card" id="finalCard">
-            <div class="fhdr"><span class="flabel" style="margin:0;">MS Hang · Mark 1:21–45</span><span class="fbadge">PREP READY</span></div>
+            <div class="fhdr"><span class="flabel" style="margin:0;">MS Hang · Mark 1:21–45</span><span class="fbadge">SOAR GUIDE</span></div>
+            
             <div class="flabel">Context</div>
-            <div class="word-chip">Jesus teaches with absolute authority, drives out unclean spirits, heals the sick, and cleanses the leper.</div>
-            <div class="flabel">Scripture Focus</div>
+            <div class="word-chip">Mark | c. AD 55–70 | To present Jesus as the servant Son of God who acts with supreme authority.</div>
+            
+            <div class="flabel">S — Scripture</div>
             <div class="word-chip" id="finalVerse"></div>
-            <div class="flabel">Word Work</div>
+            
+            <div class="flabel">O — Observation</div>
             <div class="word-chip-list" id="finalWords"></div>
-            <div class="flabel">Application</div>
-            <div class="challenge-box" id="finalChallenge"></div>
+            
+            <div class="flabel">A — Application</div>
+            <div class="word-chip" id="finalAppStatement"></div>
+            <div class="journal-prompt-box">
+              Take this into your personal journal before Sunday: In light of who God is in Mark 1, how is He calling you to respond?
+            </div>
+
+            <div class="flabel">R — Reflection</div>
+            <div class="challenge-box">
+              Read Mark 1:1–20 in your own Bible before Sunday. Reflect on his character in prayer.
+            </div>
           </div>
           <button class="export-btn" onclick="event.stopPropagation(); exportGuide();">Download Prep Sheet</button>` }
+];
+
+const sectionLabels = [
+  'Dwell',              // 0  intro
+  'Discover Context',   // 1  quest-testament
+  'Discover Context',   // 2  quest-section
+  'Discover Context',   // 3  reveal-context
+  'Prayer',             // 4  breath-prayer
+  'Word Work',          // 5  reading-intro
+  'Word Work',          // 6  vocab-scan
+  'Word Work',          // 7  vocab-review
+  'Expand',             // 8  expand-zoom-verse
+  'Expand',             // 9  expand-zoom-passage
+  'Expand',             // 10 expand-zoom-book
+  'Expand',             // 11 expand-zoom-bible
+  'Expand',             // 12 expand-cross-refs
+  'Learn Truth',        // 13 character-prompt
+  'Learn Truth',        // 14 char-verse-pick
+  'Learn Truth',        // 15 char-coaching
+  'SOAR Guide'          // 16 final
 ];
 
 function initNotches(){
@@ -548,7 +806,7 @@ function resetArrows(){
 
   if (state.index === 0) {
     hintBox.innerHTML = `<div class="swipe-hint"><i class="fa-solid fa-chevron-left"></i><i class="fa-solid fa-chevron-right"></i></div>
-    <div class="nav-subtle-caption">&lt; Swipe to navigate &gt;</div>`;
+    <div class="nav-subtle-caption">Swipe to navigate</div>`;
   } else {
     hintBox.innerHTML = `<div class="swipe-hint"><i class="fa-solid fa-chevron-left"></i><i class="fa-solid fa-chevron-right"></i></div>`;
   }
@@ -563,6 +821,7 @@ function renderBeat(i){
 
   phoneEl.style.background = b.bgGrad;
   document.querySelector('.hud-header').className = 'hud-header ' + (b.text === 'light' ? 'tx-light' : 'tx-dark');
+  document.getElementById('sectionLabel').textContent = sectionLabels[i] || '';
 
   resetArrows();
 
@@ -573,6 +832,9 @@ function renderBeat(i){
 
     const arcStem = document.getElementById('arcStemText');
     if (arcStem) arcStem.textContent = `BASED ON VERSE ${activeVerse}:`;
+
+    const coachText = document.getElementById('coachBoxText');
+    if (coachText) coachText.innerHTML = `<b>TIP:</b> Have students look down at verse ${activeVerse} and share what they think it reveals about God's character. Silence is okay—give it 7 seconds before jumping in.`;
 
     const inp = document.getElementById('customTraitInput');
     if (inp) {
@@ -603,22 +865,19 @@ function renderBeat(i){
 
 const answeredBeats = new Set();
 
-function questAnswer(e, el, gridId, fbId, correctMsg, wrongMsg){
+function questAnswer(e, el, gridId){
   e.stopPropagation();
   if (el.classList.contains('locked')) return;
   const isCorrect = el.dataset.correct === 'true';
-  const fb = document.getElementById(fbId);
   if (isCorrect) {
     const grid = document.getElementById(gridId);
     grid.querySelectorAll('.quiz-tile').forEach(t=>t.classList.add('locked'));
     el.classList.add('correct');
     answeredBeats.add(state.index);
-    if (fb) { fb.textContent = correctMsg; fb.classList.remove('bad'); fb.classList.add('good','show'); }
     const myGen = renderGen;
-    setTimeout(()=>{ if (renderGen === myGen) goNext(); }, 900);
+    setTimeout(()=>{ if (renderGen === myGen) goNext(); }, 600);
   } else {
     el.classList.add('incorrect','shake');
-    if (fb) { fb.textContent = wrongMsg; fb.classList.remove('good'); fb.classList.add('bad','show'); }
     setTimeout(()=>{ el.classList.remove('shake','incorrect'); }, 500);
   }
 }
@@ -626,15 +885,16 @@ function questAnswer(e, el, gridId, fbId, correctMsg, wrongMsg){
 let popTimer = null;
 function tapWord(e, el){
   e.stopPropagation();
-  const word = el.dataset.word;
-  if (!word) return;
+  const key = el.dataset.word;
+  if (!key) return;
+  const word = el.textContent.trim();
   const already = el.classList.contains('flagged');
   if (already) {
     el.classList.remove('flagged');
     state.wordTaps = state.wordTaps.filter(w => w.el !== el);
     hideDefPopover();
   } else {
-    const def = defs[word] || null;
+    const def = defs[key] || null;
     el.classList.add('flagged');
     state.wordTaps.push({ el, word, def });
     if (def) showDefPopover(el, word, def); else hideDefPopover();
@@ -649,7 +909,7 @@ function showDefPopover(el, word, def){
   pop.innerHTML = `<span class="dp-word">${word}</span>${def}`;
   const wordRect = el.getBoundingClientRect();
   const wrapRect = wrapEl.getBoundingClientRect();
-  const popWidth = 230;
+  const popWidth = 240;
   let left = (wordRect.left - wrapRect.left) - 10;
   left = Math.max(8, Math.min(left, wrapRect.width - popWidth - 8));
   let top = (wordRect.bottom - wrapRect.top) + 8;
@@ -679,7 +939,11 @@ function checkVocabComplete(){
     textEl.innerHTML = '<i class="fa-solid fa-check"></i> Continue';
   } else {
     const n = state.wordTaps.length;
-    textEl.textContent = n > 0 ? `${n} word${n===1?'':'s'} flagged` : 'Flag Key Words';
+    if (n > 0 && !state.scrolledToEnd) {
+      textEl.textContent = `${n} flagged — finish reading`;
+    } else {
+      textEl.textContent = n > 0 ? `${n} word${n===1?'':'s'} flagged` : 'Flag Key Words';
+    }
   }
 }
 
@@ -691,12 +955,8 @@ function tryAdvanceVocab(){
 function checkPassageScroll(){
   const el = document.getElementById('passageScrollEl');
   const hint = document.getElementById('scrollMoreHint');
-  const fill = document.getElementById('readProgressFill');
   if (!el) return;
   hideDefPopover();
-  const maxScroll = el.scrollHeight - el.clientHeight;
-  const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (el.scrollTop / maxScroll) * 100)) : 100;
-  if (fill) fill.style.width = pct + '%';
   const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
   if (atBottom && !state.scrolledToEnd) {
     state.scrolledToEnd = true;
@@ -713,9 +973,14 @@ function renderVocabReview(){
   }
   const defined = state.wordTaps.filter(w => w.def);
   const undefinedWords = state.wordTaps.filter(w => !w.def);
-  let html = defined.map(w => `<div class="review-card"><b>${w.word}:</b> ${w.def}</div>`).join('');
+  
+  let html = '';
+  if (defined.length > 0) {
+    html += `<div class="review-section-header"><i class="fa-solid fa-book-bookmark"></i> Defined Terms</div>`;
+    html += defined.map(w => `<div class="review-card"><b>${w.word}:</b> ${w.def}</div>`).join('');
+  }
   if (undefinedWords.length > 0) {
-    html += `<div class="pill-cloud-label">Look up before Sunday</div>
+    html += `<div class="review-section-header"><i class="fa-solid fa-magnifying-glass"></i> Terms to Define Before Sunday</div>
              <div class="pill-cloud">${undefinedWords.map(w => `<div class="research-pill">${w.word}</div>`).join('')}</div>`;
   }
   box.innerHTML = html;
@@ -793,20 +1058,25 @@ function fillFinal(){
       return `<div class="word-chip"><b>${w.word}</b> — ${d}</div>`;
     }).join('');
   }
+  
   const fv = document.getElementById('finalVerse');
   if (state.charVerse) {
     fv.innerHTML = `<b>Mark 1:${state.charVerse}</b> — ${quoteVerse(passage[state.charVerse-21])}`;
   } else {
     fv.textContent = 'No verse selected.';
   }
+  
   const trait = state.trait && state.trait.trim() ? state.trait.trim() : 'Holy';
-  document.getElementById('finalChallenge').innerHTML = `<em>"Therefore, place your faith in Him when battling lies, the enemy, or illness because God is ${trait}."</em>`;
+  const appStmt = document.getElementById('finalAppStatement');
+  if (appStmt) {
+    appStmt.innerHTML = `God is <b>${trait}</b>. Therefore, I ________.`;
+  }
 }
 
 function goNext(){
   const b = beats[state.index];
   if (b.blockTap) {
-    if (b.id === 'quest-demons' && !answeredBeats.has(state.index)) {
+    if ((b.id === 'quest-testament' || b.id === 'quest-section') && !answeredBeats.has(state.index)) {
       triggerSelectionClue();
       return;
     }
@@ -840,13 +1110,13 @@ function goNext(){
 
 function goPrev(){ if (state.index > 0) { state.index--; renderBeat(state.index); } }
 
-/* KEYBOARD NAVIGATION (DESKTOP ARROW KEYS) */
+/* KEYBOARD NAVIGATION */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') goNext();
   if (e.key === 'ArrowLeft') goPrev();
 });
 
-/* SWIPE NAVIGATION (TOUCH & MOUSE DRAG) */
+/* SWIPE NAVIGATION */
 let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
 const stageEl = document.getElementById('stage');
 
@@ -907,26 +1177,30 @@ async function exportGuide(){
 
   target.innerHTML = `
     <div style="font-family:'Inter',sans-serif; background:#FFF; color:#0D0D0D; padding:30px 26px; border:5px solid #0D0D0D;">
-      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#A855F7;">MS Hang · Prep Guide</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#A855F7;">MS Hang · SOAR Guide</div>
       <div style="font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; margin:6px 0 18px 0; text-transform:uppercase;">Mark 1:21–45</div>
 
       <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin-bottom:8px;">Context</div>
-      <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:13px; line-height:1.6; margin-bottom:18px;">Jesus displays His supreme authority in Capernaum—over demons, sickness, and ritual uncleanness.</div>
+      <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:13px; line-height:1.6; margin-bottom:18px;">Mark | c. AD 55–70 | To present Jesus as the servant Son of God who acts with supreme authority.</div>
 
-      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin-bottom:10px;">Scripture Focus</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin-bottom:10px;">S — Scripture</div>
       ${verseHTML}
 
-      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin:20px 0 8px 0;">Word Work</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin:20px 0 8px 0;">O — Observation</div>
       ${wordsHTML}
 
-      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin:20px 0 8px 0;">Application</div>
-      <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:13.5px; line-height:1.5; background:#FFC72C; border:3px solid #0D0D0D; border-radius:14px; padding:12px 13px;">"Therefore, place your faith in Him when battling lies, the enemy, or illness because God is ${trait}."</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin:20px 0 8px 0;">A — Application</div>
+      <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:13.5px; line-height:1.5; background:#FFC72C; border:3px solid #0D0D0D; border-radius:14px; padding:12px 13px;">God is <b>${trait}</b>. Therefore, I ________.</div>
+      <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:11.5px; line-height:1.4; opacity:.85; margin-top:8px;">Take this into your personal journal before Sunday: In light of who God is in Mark 1, how is He calling you to respond?</div>
+
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#A855F7; margin:20px 0 8px 0;">R — Reflection</div>
+      <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:11.5px; line-height:1.45; background:rgba(168,85,247,0.1); border:2px dashed #A855F7; border-radius:12px; padding:11px 13px; color:#0D0D0D;">Read Mark 1:1–20 in your own Bible before Sunday. Reflect on his character in prayer.</div>
     </div>`;
 
   try{
     const canvas = await html2canvas(target.firstElementChild, { scale: 2, backgroundColor: null, useCORS: true });
     const link = document.createElement('a');
-    link.download = 'MS_Hang_Mark1_21-45_Prep.png';
+    link.download = 'MS_Hang_SOAR_Guide.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
   } catch(err){ alert('Export failed. Please take a screenshot instead.'); }
