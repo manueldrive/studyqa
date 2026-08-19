@@ -44,6 +44,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .dwell-column {
@@ -61,7 +62,7 @@ html, body {
 }
 
 .dwell-column:hover:not(.is-expanded) {
-  flex: 1.3;
+  flex: 1.25;
   filter: brightness(1.03);
 }
 
@@ -81,7 +82,7 @@ html, body {
 /* Header of each column */
 .col-header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   z-index: 2;
@@ -108,7 +109,7 @@ html, body {
   transform: scale(0.95);
 }
 
-/* Style: Mixed-Blend Overlay */
+/* Mixed-Blend Overlay */
 .style-overlay .col-letter-target {
   font-family: var(--font-display);
   letter-spacing: -0.06em;
@@ -122,7 +123,7 @@ html, body {
   opacity: 0.15;
 }
 
-/* Brand Lockup in Column 00 */
+/* Brand Lockup */
 .col-brand-lockup {
   display: inline-flex;
   align-items: center;
@@ -164,26 +165,27 @@ html, body {
   text-orientation: mixed;
   white-space: nowrap;
   font-family: var(--font-display);
-  font-size: clamp(24px, 2.6vw, 34px);
+  font-size: clamp(22px, 2.4vw, 32px);
   font-weight: 900;
   letter-spacing: -0.02em;
-  opacity: 0.9;
+  opacity: 0.85;
   transition: opacity 0.25s ease;
   pointer-events: none;
 }
 
-.col-intro-vertical {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.col-intro-vertical .dwell-mark {
-  transform: rotate(90deg);
-}
-
 .dwell-column.is-expanded .col-vertical-title {
   opacity: 0;
+}
+
+/* Subtle Mobile Expand Indicator */
+.col-expand-chevron {
+  display: none;
+  opacity: 0.55;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+.dwell-column.is-expanded .col-expand-chevron {
+  transform: rotate(180deg);
+  opacity: 0.9;
 }
 
 /* Expanded Content Area */
@@ -193,39 +195,42 @@ html, body {
   justify-content: flex-end;
   gap: 16px;
   opacity: 0;
-  transform: translateY(20px);
+  max-height: 0;
+  transform: translateY(18px);
   pointer-events: none;
-  transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+  transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.35s ease;
   max-width: 620px;
   z-index: 2;
+  overflow: hidden;
 }
 
 .dwell-column.is-expanded .col-expanded-body {
   opacity: 1;
+  max-height: 800px;
   transform: translateY(0);
   pointer-events: auto;
 }
 
 .col-step-tag {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  opacity: 0.9;
+  letter-spacing: 0.16em;
+  opacity: 0.8;
 }
 
 .col-headline {
   font-family: var(--font-display);
-  font-size: clamp(28px, 3.4vw, 44px);
+  font-size: clamp(24px, 3vw, 40px);
   font-weight: 900;
-  line-height: 1.12;
+  line-height: 1.14;
   letter-spacing: -0.03em;
 }
 
 .col-subtext {
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.55;
-  opacity: 0.85;
+  opacity: 0.88;
 }
 
 .col-prompt-list {
@@ -233,12 +238,12 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: clamp(14px, 1.1vw, 16px);
-  line-height: 1.55;
-  background: rgba(0, 0, 0, 0.14);
-  padding: 18px 20px;
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
+  font-size: clamp(14px, 1.1vw, 15.5px);
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.12);
+  padding: 16px 18px;
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
 }
 
 .col-intro .col-prompt-list {
@@ -251,53 +256,169 @@ html, body {
   text-underline-offset: 3px;
 }
 
-.col-actions-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.col-cta-btn {
+/* ── Subtle UI Navigation Gestures & Affordances ── */
+.col-nav-cue {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: #ffffff;
-  color: var(--ink);
-  padding: 11px 22px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 13.5px;
-  text-decoration: none;
-  border: none;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 6px 0;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-.col-cta-btn:hover { transform: translateY(-2px); opacity: 0.95; }
-.col-cta-btn svg { width: 16px; height: 16px; }
-
-.col-intro .col-cta-btn {
-  background: var(--ink);
-  color: var(--paper);
+  width: fit-content;
+  opacity: 0.8;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  user-select: none;
 }
 
-.col-secondary-btn {
+.col-nav-cue:hover {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.cue-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cue-arrow {
+  width: 22px;
+  height: 22px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.07);
-  color: var(--ink);
-  padding: 11px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 13.5px;
-  text-decoration: none;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: nudgeForward 2.2s infinite ease-in-out;
 }
-.col-secondary-btn:hover {
-  background: rgba(0, 0, 0, 0.12);
-  transform: translateY(-2px);
+
+.col-nav-cue:hover .cue-arrow {
+  transform: translateX(4px);
+}
+
+@keyframes nudgeForward {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+/* ── Mobile Layout (< 768px) ── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+  }
+  
+  .columns-wrapper {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  .col-expand-chevron {
+    display: inline-block;
+  }
+
+  /* Compact collapsed card bars */
+  .dwell-column {
+    flex: none !important;
+    min-height: 52px;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    justify-content: center;
+    transition: background-color 0.25s ease, padding 0.3s ease;
+  }
+
+  .dwell-column:not(.is-expanded) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dwell-column:not(.is-expanded) .col-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dwell-column:not(.is-expanded) .col-header-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .dwell-column:not(.is-expanded) .col-vertical-title {
+    position: static;
+    transform: none;
+    writing-mode: horizontal-tb;
+    font-size: 16.5px;
+    font-weight: 800;
+    opacity: 0.95;
+    pointer-events: none;
+    letter-spacing: -0.01em;
+  }
+
+  .dwell-column:not(.is-expanded) .col-letter-target {
+    font-size: 21px;
+    line-height: 1;
+  }
+
+  /* Expanded state on mobile */
+  .dwell-column.is-expanded {
+    min-height: auto;
+    padding: 22px 20px 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .dwell-column.is-expanded .col-header {
+    margin-bottom: 12px;
+  }
+
+  .dwell-column.is-expanded .col-vertical-title {
+    display: none;
+  }
+
+  .dwell-column.is-expanded .col-letter-target {
+    font-size: 28px;
+  }
+
+  /* Keep first card ultra compact on mobile */
+  .col-intro .col-prompt-list {
+    display: none;
+  }
+
+  .col-headline {
+    font-size: 21px;
+    line-height: 1.2;
+  }
+
+  .col-subtext {
+    font-size: 13.5px;
+  }
+
+  .col-prompt-list {
+    padding: 12px 14px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .col-nav-cue {
+    padding: 8px 0 4px;
+  }
+
+  @keyframes nudgeForward {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+
+  .col-nav-cue .cue-arrow svg {
+    transform: rotate(90deg);
+  }
 }
 
 /* ── Expandable UI Tester ── */
@@ -329,10 +450,7 @@ html, body {
   opacity: 0.9;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.tester-toggle-btn:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-}
+.tester-toggle-btn:hover { opacity: 1; transform: translateY(-2px); }
 .tester-toggle-btn svg { width: 15px; height: 15px; }
 
 .tester-panel {
@@ -386,11 +504,7 @@ html, body {
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.tester-tab.active {
-  background: #16252d;
-  color: #ffffff;
-  opacity: 1;
-}
+.tester-tab.active { background: #16252d; color: #ffffff; opacity: 1; }
 
 .tester-list {
   display: flex;
@@ -443,106 +557,6 @@ html, body {
   overflow: hidden;
 }
 .tester-swatches span { flex: 1; }
-
-/* ── Mobile Layout Optimization (< 768px) ── */
-@media (max-width: 768px) {
-  html, body {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: auto;
-  }
-  
-  .columns-wrapper {
-    flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-    width: 100%;
-  }
-
-  .dwell-column {
-    min-height: 64px;
-    flex: none !important;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    justify-content: center;
-  }
-
-  .dwell-column.is-expanded {
-    min-height: auto;
-    padding: 28px 20px 36px;
-    justify-content: space-between;
-  }
-
-  /* Compact collapsed header on mobile */
-  .dwell-column:not(.is-expanded) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .dwell-column:not(.is-expanded) .col-header {
-    width: auto;
-  }
-
-  .col-vertical-title {
-    position: static;
-    transform: none;
-    writing-mode: horizontal-tb;
-    font-size: 18px;
-    font-weight: 800;
-    opacity: 0.95;
-    pointer-events: auto;
-  }
-
-  .col-intro-vertical {
-    gap: 8px;
-  }
-
-  .col-intro-vertical .dwell-mark {
-    transform: none;
-  }
-
-  .col-letter-target {
-    font-size: 24px;
-  }
-
-  .col-headline {
-    font-size: 26px;
-    line-height: 1.18;
-  }
-
-  .col-subtext {
-    font-size: 14px;
-  }
-
-  .col-prompt-list {
-    padding: 14px 16px;
-    font-size: 14px;
-    gap: 8px;
-  }
-
-  .col-cta-btn, .col-secondary-btn {
-    padding: 10px 18px;
-    font-size: 13px;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .col-actions-row {
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-  }
-
-  .tester-wrap {
-    bottom: 14px;
-    right: 14px;
-  }
-
-  .tester-panel {
-    width: calc(100vw - 28px);
-  }
-}
 </style>
 </head>
 <body class="style-overlay">
@@ -563,31 +577,21 @@ html, body {
             <span class="dm-bottom"></span>
           </div>
         </div>
-      </div>
-      <div class="col-vertical-title col-intro-vertical">
-        <span>Dwell</span>
-        <div class="dwell-mark">
-          <span class="dm-top"></span>
-          <span class="dm-left"></span>
-          <span class="dm-center"></span>
-          <span class="dm-right"></span>
-          <span class="dm-bottom"></span>
-        </div>
+        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
         <span class="col-step-tag">The Dwell Method</span>
-        <h2 class="col-headline">Building blocks for biblical literacy[cite: 1].</h2>
-        <p class="col-subtext">Because quick answers don't produce deep lives[cite: 1]. Dwell gives your eyes and mind a specific job through five intentional read-throughs of Scripture[cite: 1]:</p>
+        <h2 class="col-headline">Building blocks for biblical literacy.</h2>
+        <p class="col-subtext">Because quick answers don't produce deep lives. Dwell gives your eyes and mind a specific job through five intentional read-throughs of Scripture:</p>
         <ul class="col-prompt-list">
-          <li>A repeatable rhythm to quiet distractions and slow down[cite: 1].</li>
-          <li>Modular blocks you can practice one-by-one or stack together[cite: 1].</li>
+          <li>A repeatable rhythm to quiet distractions and slow down.</li>
+          <li>Modular blocks you can practice one-by-one or stack together.</li>
         </ul>
-        <div class="col-actions-row">
-          <button type="button" class="col-cta-btn" onclick="goToNextStep(event, '.col-discover')">
-            Next: Discover
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </button>
-          <a href="dwell-guide" class="col-secondary-btn" onclick="event.stopPropagation()">Study Guides</a>
+        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-discover')">
+          <span class="cue-label">Begin with Discover</span>
+          <span class="cue-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
         </div>
       </div>
     </section>
@@ -595,103 +599,128 @@ html, body {
     <!-- D | Discover -->
     <section class="dwell-column col-discover" onclick="expandColumn(this)">
       <div class="col-header">
-        <span class="col-letter-target">D</span>
+        <div class="col-header-left">
+          <span class="col-letter-target">D</span>
+          <span class="col-vertical-title">Discover</span>
+        </div>
+        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <span class="col-vertical-title">Discover</span>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step One &bull; Discover</span>
         <h2 class="col-headline">Ground the passage in its true setting.</h2>
         <ul class="col-prompt-list">
-          <li>Identify <strong>author &bull; time frame &bull; audience &bull; purpose</strong>[cite: 1].</li>
-          <li>Put away commentaries for now and read slowly to note characters and setting[cite: 1].</li>
+          <li>Identify <strong>author &bull; time frame &bull; audience &bull; purpose</strong>.</li>
+          <li>Put away commentaries for now and read slowly to note characters and setting.</li>
         </ul>
-        <button type="button" class="col-cta-btn" onclick="goToNextStep(event, '.col-wordwork')">
-          Next: Word Work
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
+        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-wordwork')">
+          <span class="cue-label">Advance to Word Work</span>
+          <span class="cue-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
       </div>
     </section>
 
     <!-- W | Word Work -->
     <section class="dwell-column col-wordwork" onclick="expandColumn(this)">
       <div class="col-header">
-        <span class="col-letter-target">W</span>
+        <div class="col-header-left">
+          <span class="col-letter-target">W</span>
+          <span class="col-vertical-title">Word Work</span>
+        </div>
+        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <span class="col-vertical-title">Word Work</span>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Two &bull; Word Work</span>
         <h2 class="col-headline">Zoom into the structure and words.</h2>
         <ul class="col-prompt-list">
-          <li>Look for repeated words, lists, comparisons, and structural emphasis[cite: 1].</li>
-          <li>Look up unfamiliar or theological terms for clarity[cite: 1].</li>
-          <li>Summarize the whole text in 1–2 precise sentences[cite: 1].</li>
+          <li>Look for repeated words, lists, comparisons, and structural emphasis.</li>
+          <li>Look up unfamiliar or theological terms for clarity.</li>
+          <li>Summarize the whole text in 1–2 precise sentences.</li>
         </ul>
-        <button type="button" class="col-cta-btn" onclick="goToNextStep(event, '.col-expand')">
-          Next: Expand
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
+        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-expand')">
+          <span class="cue-label">Advance to Expand</span>
+          <span class="cue-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
       </div>
     </section>
 
     <!-- E | Expand -->
     <section class="dwell-column col-expand" onclick="expandColumn(this)">
       <div class="col-header">
-        <span class="col-letter-target">E</span>
+        <div class="col-header-left">
+          <span class="col-letter-target">E</span>
+          <span class="col-vertical-title">Expand</span>
+        </div>
+        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <span class="col-vertical-title">Expand</span>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Three &bull; Expand</span>
         <h2 class="col-headline">Connect the passage to the larger story.</h2>
         <ul class="col-prompt-list">
-          <li>Compare multiple translations to clarify confusing phrases[cite: 1].</li>
-          <li>Read the surrounding chapters to see the broader literary arc[cite: 1].</li>
-          <li>Follow 1–2 cross-references into scripture[cite: 1].</li>
+          <li>Compare multiple translations to clarify confusing phrases.</li>
+          <li>Read the surrounding chapters to see the broader literary arc.</li>
+          <li>Follow 1–2 cross-references into scripture.</li>
         </ul>
-        <button type="button" class="col-cta-btn" onclick="goToNextStep(event, '.col-learn')">
-          Next: Learn
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
+        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-learn')">
+          <span class="cue-label">Advance to Learn</span>
+          <span class="cue-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
       </div>
     </section>
 
     <!-- L | Learn -->
     <section class="dwell-column col-learn" onclick="expandColumn(this)">
       <div class="col-header">
-        <span class="col-letter-target">L</span>
+        <div class="col-header-left">
+          <span class="col-letter-target">L</span>
+          <span class="col-vertical-title">Learn</span>
+        </div>
+        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <span class="col-vertical-title">Learn</span>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Four &bull; Learn</span>
         <h2 class="col-headline">Cross the bridge to eternal truth.</h2>
         <ul class="col-prompt-list">
-          <li>How would the original audience have understood this?[cite: 1]</li>
-          <li>What does this reveal about God's unchanging character?[cite: 1]</li>
-          <li>Verify your conclusions with others in community[cite: 1].</li>
+          <li>How would the original audience have understood this?</li>
+          <li>What does this reveal about God's unchanging character?</li>
+          <li>Verify your conclusions with others in community.</li>
         </ul>
-        <button type="button" class="col-cta-btn" onclick="goToNextStep(event, '.col-live')">
-          Next: Live
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </button>
+        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-live')">
+          <span class="cue-label">Advance to Live</span>
+          <span class="cue-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
       </div>
     </section>
 
     <!-- L | Live -->
     <section class="dwell-column col-live" onclick="expandColumn(this)">
       <div class="col-header">
-        <span class="col-letter-target">L</span>
+        <div class="col-header-left">
+          <span class="col-letter-target">L</span>
+          <span class="col-vertical-title">Live</span>
+        </div>
+        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
-      <span class="col-vertical-title">Live</span>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Five &bull; Live</span>
         <h2 class="col-headline">Let truth transform daily life.</h2>
         <ul class="col-prompt-list">
-          <li>What cultural or personal lies are challenged by this truth?[cite: 1]</li>
-          <li>How will this shape your prayers, words, and actions today?[cite: 1]</li>
+          <li>What cultural or personal lies are challenged by this truth?</li>
+          <li>How will this shape your prayers, words, and actions today?</li>
         </ul>
-        <a href="dwell-guide" class="col-cta-btn">
-          Explore Guides
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
+        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-intro')">
+          <span class="cue-label">Return to Start</span>
+          <span class="cue-arrow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
       </div>
     </section>
 
@@ -728,15 +757,28 @@ html, body {
 <script>
 /* ── Navigation Accordion ── */
 function expandColumn(selectedCol) {
+  const isMobile = window.innerWidth <= 768;
+  const isAlreadyExpanded = selectedCol.classList.contains('is-expanded');
   const allCols = document.querySelectorAll('.dwell-column');
+
   allCols.forEach(col => col.classList.remove('is-expanded'));
-  selectedCol.classList.add('is-expanded');
+
+  if (!isMobile || !isAlreadyExpanded) {
+    selectedCol.classList.add('is-expanded');
+  }
 }
 
 function goToNextStep(event, selector) {
   event.stopPropagation();
   const nextCol = document.querySelector(selector);
-  if (nextCol) expandColumn(nextCol);
+  if (nextCol) {
+    const allCols = document.querySelectorAll('.dwell-column');
+    allCols.forEach(col => col.classList.remove('is-expanded'));
+    nextCol.classList.add('is-expanded');
+    if (window.innerWidth <= 768) {
+      nextCol.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 }
 
 /* ── Refined Letter Style Treatments ── */
@@ -763,35 +805,39 @@ let activePaletteId = "warm-clay-coastal";
 
 function renderTester() {
   const styleList = document.getElementById("styleList");
-  styleList.innerHTML = "";
-  letterStyles.forEach(st => {
-    const card = document.createElement("div");
-    card.className = `tester-card ${st.id === activeStyleId ? 'active' : ''}`;
-    card.onclick = () => applyLetterStyle(st.id);
-    card.innerHTML = `
-      <div class="tester-card-name"><span>${st.name}</span><span class="tag">${st.tag}</span></div>
-    `;
-    styleList.appendChild(card);
-  });
+  if (styleList) {
+    styleList.innerHTML = "";
+    letterStyles.forEach(st => {
+      const card = document.createElement("div");
+      card.className = `tester-card ${st.id === activeStyleId ? 'active' : ''}`;
+      card.onclick = () => applyLetterStyle(st.id);
+      card.innerHTML = `
+        <div class="tester-card-name"><span>${st.name}</span><span class="tag">${st.tag}</span></div>
+      `;
+      styleList.appendChild(card);
+    });
+  }
 
   const palList = document.getElementById("paletteList");
-  palList.innerHTML = "";
-  colorways.forEach(cw => {
-    const card = document.createElement("div");
-    card.className = `tester-card ${cw.id === activePaletteId ? 'active' : ''}`;
-    card.onclick = () => applyColorway(cw.id);
-    card.innerHTML = `
-      <div class="tester-card-name"><span>${cw.name}</span><span class="tag">${cw.tag}</span></div>
-      <div class="tester-swatches">
-        <span style="background:${cw.tokens['--d-discover']}"></span>
-        <span style="background:${cw.tokens['--d-wordwork']}"></span>
-        <span style="background:${cw.tokens['--d-expand']}"></span>
-        <span style="background:${cw.tokens['--d-learn']}"></span>
-        <span style="background:${cw.tokens['--d-live']}"></span>
-      </div>
-    `;
-    palList.appendChild(card);
-  });
+  if (palList) {
+    palList.innerHTML = "";
+    colorways.forEach(cw => {
+      const card = document.createElement("div");
+      card.className = `tester-card ${cw.id === activePaletteId ? 'active' : ''}`;
+      card.onclick = () => applyColorway(cw.id);
+      card.innerHTML = `
+        <div class="tester-card-name"><span>${cw.name}</span><span class="tag">${cw.tag}</span></div>
+        <div class="tester-swatches">
+          <span style="background:${cw.tokens['--d-discover']}"></span>
+          <span style="background:${cw.tokens['--d-wordwork']}"></span>
+          <span style="background:${cw.tokens['--d-expand']}"></span>
+          <span style="background:${cw.tokens['--d-learn']}"></span>
+          <span style="background:${cw.tokens['--d-live']}"></span>
+        </div>
+      `;
+      palList.appendChild(card);
+    });
+  }
 }
 
 function applyLetterStyle(styleClass) {
@@ -826,6 +872,9 @@ function toggleTester() {
 
 window.addEventListener("DOMContentLoaded", () => {
   renderTester();
+  if (window.innerWidth <= 768) {
+    document.querySelectorAll('.dwell-column').forEach(c => c.classList.remove('is-expanded'));
+  }
 });
 </script>
 
