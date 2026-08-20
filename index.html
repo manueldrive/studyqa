@@ -2,30 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Dwell | Building blocks for Biblical literacy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@500;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Italiana&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Raleway:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Raleway:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --ink:            #22292b;
-  --paper:          #fdfbf7;
-  --paper-dim:      #f4e9d7;
+  --ink:            #211a24;
+  --paper:          #faf7f5;
+  --paper-dim:      #f5e9e2;
   
-  /* Palette mapping */
-  --d-discover:     #6fa4af; /* D | Muted Slate Teal */
-  --d-wordwork:     #d97d55; /* W | Terracotta Clay */
-  --d-expand:       #b8c4a9; /* E | Herb / Sage Green */
-  --d-learn:        #e5ac6b; /* L | Warm Golden Ochre */
-  --d-live:         #456b77; /* L | Deep Slate Ocean */
+  /* Baseline: Golden Hour Horizon */
+  --d-discover:     #e28a5c;
+  --d-wordwork:     #d76b65;
+  --d-expand:       #9e6488;
+  --d-learn:        #5d587e;
+  --d-live:         #2d324f;
 
   --font-display: 'Raleway', sans-serif;
   --font-sans:    'Plus Jakarta Sans', sans-serif;
   --font-mono:    'Space Grotesk', monospace;
+  --font-serif:   'Fraunces', serif;
 }
 
 html, body {
@@ -38,13 +39,12 @@ html, body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ── Fullscreen Columns Wrapper ── */
+/* ── Columns Wrapper ── */
 .columns-wrapper {
   display: flex;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  touch-action: pan-y;
 }
 
 .dwell-column {
@@ -57,7 +57,7 @@ html, body {
   cursor: pointer;
   overflow: hidden;
   color: #ffffff;
-  transition: flex 0.5s cubic-bezier(0.25, 1, 0.3, 1), filter 0.2s ease, background-color 0.3s ease;
+  transition: flex 0.5s cubic-bezier(0.25, 1, 0.3, 1), filter 0.2s ease, background-color 0.4s ease;
   user-select: none;
 }
 
@@ -79,83 +79,70 @@ html, body {
 .col-learn    { background: var(--d-learn); }
 .col-live     { background: var(--d-live); }
 
-/* Header of each column */
+/* Header */
 .col-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 16px;
   width: 100%;
   z-index: 2;
+}
+
+.col-header-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
 }
 
 /* Spine Letter Container */
 .col-letter-target {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  transform-origin: left top;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  justify-content: center;
   line-height: 1;
-  font-weight: 900;
+  font-weight: 600;
+  font-family: var(--font-serif);
+  font-style: italic;
   font-size: clamp(38px, 4.2vw, 54px);
-  max-width: 100%;
-}
-
-.dwell-column:hover:not(.is-expanded) .col-letter-target {
-  transform: translateY(-3px) scale(1.04);
-}
-
-.dwell-column.is-expanded .col-letter-target {
-  transform: scale(0.95);
-}
-
-/* Mixed-Blend Overlay */
-.style-overlay .col-letter-target {
-  font-family: var(--font-display);
-  letter-spacing: -0.06em;
-  color: #ffffff;
-  mix-blend-mode: overlay;
+  letter-spacing: -0.02em;
   opacity: 0.95;
-}
-.style-overlay .col-intro .col-letter-target {
-  color: var(--ink);
-  mix-blend-mode: normal;
-  opacity: 0.15;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 /* Brand Lockup */
 .col-brand-lockup {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   white-space: nowrap;
 }
 
 .col-brand-text {
   font-family: var(--font-display);
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: clamp(42px, 4.8vw, 64px);
   font-weight: 900;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   line-height: 1;
   color: var(--ink);
 }
 
-/* Dwell Logo Mark */
+/* Dwell Plus-Mark (~30% larger, positioned higher) */
 .dwell-mark {
   display: inline-grid;
-  grid-template-columns: repeat(3, 7px);
-  grid-template-rows: repeat(3, 7px);
+  grid-template-columns: repeat(3, 6px);
+  grid-template-rows: repeat(3, 6px);
   gap: 2.5px;
   flex-shrink: 0;
+  transform: translateY(-4px);
 }
-.dwell-mark span { width: 7px; height: 7px; border-radius: 1.5px; transition: background-color 0.3s ease; }
+.dwell-mark span { width: 6px; height: 6px; border-radius: 1.5px; transition: background-color 0.4s ease; }
 .dm-top    { grid-column: 2; grid-row: 1; background: var(--d-discover); }
 .dm-left   { grid-column: 1; grid-row: 2; background: var(--d-wordwork); }
 .dm-center { grid-column: 2; grid-row: 2; background: var(--d-learn); }
 .dm-right  { grid-column: 3; grid-row: 2; background: var(--d-expand); }
 .dm-bottom { grid-column: 2; grid-row: 3; background: var(--d-live); }
 
-/* Rotated Vertical Title */
+/* Rotated Vertical Title (Desktop) */
 .col-vertical-title {
   position: absolute;
   left: 50%;
@@ -177,23 +164,12 @@ html, body {
   opacity: 0;
 }
 
-/* Subtle Mobile Expand Indicator */
-.col-expand-chevron {
-  display: none;
-  opacity: 0.55;
-  transition: transform 0.3s ease, opacity 0.2s ease;
-}
-.dwell-column.is-expanded .col-expand-chevron {
-  transform: rotate(180deg);
-  opacity: 0.9;
-}
-
-/* Expanded Content Area */
+/* Expanded Body Content */
 .col-expanded-body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 18px;
   opacity: 0;
   max-height: 0;
   transform: translateY(18px);
@@ -206,7 +182,7 @@ html, body {
 
 .dwell-column.is-expanded .col-expanded-body {
   opacity: 1;
-  max-height: 800px;
+  max-height: 1000px;
   transform: translateY(0);
   pointer-events: auto;
 }
@@ -221,51 +197,77 @@ html, body {
 
 .col-headline {
   font-family: var(--font-display);
-  font-size: clamp(24px, 3vw, 40px);
+  font-size: clamp(24px, 3.2vw, 42px);
   font-weight: 900;
-  line-height: 1.14;
+  line-height: 1.15;
   letter-spacing: -0.03em;
 }
 
 .col-subtext {
-  font-size: 14.5px;
-  line-height: 1.55;
-  opacity: 0.88;
+  font-size: clamp(15px, 1.25vw, 17px);
+  line-height: 1.6;
+  opacity: 0.92;
 }
 
+/* Prompts / Questions */
 .col-prompt-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: clamp(14px, 1.1vw, 15.5px);
-  line-height: 1.5;
-  background: rgba(0, 0, 0, 0.12);
-  padding: 16px 18px;
-  border-radius: 14px;
-  backdrop-filter: blur(10px);
+  gap: 14px;
+  padding: 0;
+  margin: 4px 0 6px;
+  font-size: clamp(15px, 1.25vw, 17.5px);
+  line-height: 1.55;
+  opacity: 0.95;
 }
 
-.col-intro .col-prompt-list {
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--ink);
+.col-prompt-list li {
+  position: relative;
+  padding-left: 20px;
 }
 
-.col-prompt-list li strong {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.col-prompt-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  opacity: 0.55;
+  font-weight: 700;
 }
 
-/* ── Subtle UI Navigation Gestures & Affordances ── */
+/* Indented sub-bullets for Discovery without underlines */
+.col-sub-prompt-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 16px;
+  margin-top: 8px;
+  padding-left: 4px;
+}
+
+.col-sub-prompt-list li {
+  padding-left: 14px;
+  font-size: 0.92em;
+  opacity: 0.9;
+}
+
+.col-sub-prompt-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  opacity: 0.7;
+}
+
+/* Navigation hint gesture */
 .col-nav-cue {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 4px;
   padding: 6px 0;
   cursor: pointer;
   width: fit-content;
-  opacity: 0.8;
+  opacity: 0.85;
   transition: opacity 0.25s ease, transform 0.25s ease;
   user-select: none;
 }
@@ -288,12 +290,7 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: nudgeForward 2.2s infinite ease-in-out;
-}
-
-.col-nav-cue:hover .cue-arrow {
-  transform: translateX(4px);
 }
 
 @keyframes nudgeForward {
@@ -304,57 +301,36 @@ html, body {
 /* ── Mobile Layout (< 768px) ── */
 @media (max-width: 768px) {
   html, body {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 100%;
+    overflow: hidden;
+    height: 100dvh;
   }
   
   .columns-wrapper {
+    display: flex;
     flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-    width: 100%;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
   }
 
-  .col-expand-chevron {
-    display: inline-block;
-  }
-
-  /* Compact collapsed card bars */
   .dwell-column {
-    flex: none !important;
-    min-height: 52px;
-    padding: 14px 20px;
+    flex: 1 1 0px !important;
+    min-height: 0;
+    padding: 0 24px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     justify-content: center;
-    transition: background-color 0.25s ease, padding 0.3s ease;
-  }
-
-  .dwell-column:not(.is-expanded) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    transition: flex 0.4s cubic-bezier(0.25, 1, 0.3, 1);
   }
 
   .dwell-column:not(.is-expanded) .col-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .dwell-column:not(.is-expanded) .col-header-left {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
+    height: 100%;
   }
 
   .dwell-column:not(.is-expanded) .col-vertical-title {
     position: static;
     transform: none;
     writing-mode: horizontal-tb;
-    font-size: 16.5px;
+    font-size: 18px;
     font-weight: 800;
     opacity: 0.95;
     pointer-events: none;
@@ -362,21 +338,21 @@ html, body {
   }
 
   .dwell-column:not(.is-expanded) .col-letter-target {
-    font-size: 21px;
-    line-height: 1;
-  }
-
-  /* Expanded state on mobile */
-  .dwell-column.is-expanded {
-    min-height: auto;
-    padding: 22px 20px 26px;
-    display: flex;
-    flex-direction: column;
+    font-size: 22px;
+    width: 26px;
     justify-content: flex-start;
   }
 
+  .dwell-column.is-expanded {
+    flex: 8.5 1 0px !important;
+    padding: 24px 24px 28px;
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .dwell-column.is-expanded .col-header {
-    margin-bottom: 12px;
+    margin-bottom: auto;
   }
 
   .dwell-column.is-expanded .col-vertical-title {
@@ -384,31 +360,42 @@ html, body {
   }
 
   .dwell-column.is-expanded .col-letter-target {
-    font-size: 28px;
+    font-size: 30px;
+    width: auto;
   }
 
-  /* Keep first card ultra compact on mobile */
-  .col-intro .col-prompt-list {
-    display: none;
+  .col-brand-text {
+    font-size: 38px;
+  }
+
+  .dwell-mark {
+    transform: translateY(-2px);
+  }
+
+  .dwell-column.is-expanded .col-expanded-body {
+    margin-top: auto;
   }
 
   .col-headline {
-    font-size: 21px;
+    font-size: 22px;
     line-height: 1.2;
   }
 
   .col-subtext {
-    font-size: 13.5px;
+    font-size: 14.5px;
+    line-height: 1.5;
   }
 
   .col-prompt-list {
-    padding: 12px 14px;
-    font-size: 13px;
-    gap: 6px;
+    gap: 10px;
+    font-size: 14.5px;
+    line-height: 1.45;
   }
 
-  .col-nav-cue {
-    padding: 8px 0 4px;
+  .col-sub-prompt-list {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    margin-top: 6px;
   }
 
   @keyframes nudgeForward {
@@ -421,12 +408,12 @@ html, body {
   }
 }
 
-/* ── Expandable UI Tester ── */
+/* ── UI Style Tester Widget ── */
 .tester-wrap {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 10000;
+  bottom: 18px;
+  right: 18px;
+  z-index: 999999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -439,18 +426,18 @@ html, body {
   gap: 8px;
   background: var(--ink);
   color: var(--paper);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.25);
   border-radius: 999px;
   padding: 8px 16px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.04em;
-  opacity: 0.9;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0.95;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.tester-toggle-btn:hover { opacity: 1; transform: translateY(-2px); }
+.tester-toggle-btn:hover { transform: translateY(-2px); opacity: 1; }
 .tester-toggle-btn svg { width: 15px; height: 15px; }
 
 .tester-panel {
@@ -466,8 +453,7 @@ html, body {
   max-height: 480px;
   overflow-y: auto;
 }
-.tester-panel.open { display: block; animation: popIn 0.2s ease-out; }
-@keyframes popIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.tester-panel.open { display: block; }
 
 .tester-panel-head {
   display: flex;
@@ -485,27 +471,6 @@ html, body {
   color: #16252d;
 }
 
-.tester-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.tester-tab {
-  flex: 1;
-  border: none;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.05);
-  color: #16252d;
-  opacity: 0.7;
-  font: inherit;
-  font-size: 11.5px;
-  font-weight: 700;
-  padding: 6px 0;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.tester-tab.active { background: #16252d; color: #ffffff; opacity: 1; }
-
 .tester-list {
   display: flex;
   flex-direction: column;
@@ -521,12 +486,11 @@ html, body {
   border: 1.5px solid rgba(0,0,0,0.06);
   border-radius: 9px;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 .tester-card:hover {
   background: #f4f7f8;
   border-color: #16252d;
-  transform: translateY(-1px);
 }
 .tester-card.active {
   border-color: #16252d;
@@ -559,13 +523,13 @@ html, body {
 .tester-swatches span { flex: 1; }
 </style>
 </head>
-<body class="style-overlay">
+<body>
 
-  <!-- Fullscreen Column Accordion -->
+  <!-- Column Accordion -->
   <main class="columns-wrapper" id="columnsWrapper">
     
-    <!-- Start Here / Overview -->
-    <section class="dwell-column col-intro is-expanded" onclick="expandColumn(this)">
+    <!-- Intro Card -->
+    <section class="dwell-column col-intro is-expanded" onclick="handleColumnClick(this, event)">
       <div class="col-header">
         <div class="col-brand-lockup">
           <span class="col-brand-text">Dwell</span>
@@ -577,16 +541,13 @@ html, body {
             <span class="dm-bottom"></span>
           </div>
         </div>
-        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
-        <span class="col-step-tag">The Dwell Method</span>
-        <h2 class="col-headline">Building blocks for biblical literacy.</h2>
-        <p class="col-subtext">Because quick answers don't produce deep lives. Dwell gives your eyes and mind a specific job through five intentional read-throughs of Scripture:</p>
-        <ul class="col-prompt-list">
-          <li>A repeatable rhythm to quiet distractions and slow down.</li>
-          <li>Modular blocks you can practice one-by-one or stack together.</li>
-        </ul>
+        <span class="col-step-tag">Building Blocks for Biblical Literacy</span>
+        <h2 class="col-headline">Because quick answers don’t produce deep lives.</h2>
+        <p class="col-subtext">
+          Dwell gives your mind a specific job through five intentional passes of Scripture. Practicing any single step builds helpful study habits, while stacking all five leads to lasting understanding.
+        </p>
         <div class="col-nav-cue" onclick="goToNextStep(event, '.col-discover')">
           <span class="cue-label">Begin with Discover</span>
           <span class="cue-arrow">
@@ -597,20 +558,27 @@ html, body {
     </section>
 
     <!-- D | Discover -->
-    <section class="dwell-column col-discover" onclick="expandColumn(this)">
+    <section class="dwell-column col-discover" onclick="handleColumnClick(this, event)">
       <div class="col-header">
         <div class="col-header-left">
           <span class="col-letter-target">D</span>
           <span class="col-vertical-title">Discover</span>
         </div>
-        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step One &bull; Discover</span>
-        <h2 class="col-headline">Ground the passage in its true setting.</h2>
+        <h2 class="col-headline">Find the historical background.</h2>
         <ul class="col-prompt-list">
-          <li>Identify <strong>author &bull; time frame &bull; audience &bull; purpose</strong>.</li>
-          <li>Put away commentaries for now and read slowly to note characters and setting.</li>
+          <li>
+            Use the book introduction in a study Bible to find your place:
+            <ul class="col-sub-prompt-list">
+              <li><strong>Author:</strong> Who wrote this?</li>
+              <li><strong>Audience:</strong> Who received it?</li>
+              <li><strong>Time:</strong> When was it written?</li>
+              <li><strong>Purpose:</strong> Why was it written?</li>
+            </ul>
+          </li>
+          <li>Read straight through the passage once just to map the scene and notice the characters.</li>
         </ul>
         <div class="col-nav-cue" onclick="goToNextStep(event, '.col-wordwork')">
           <span class="cue-label">Advance to Word Work</span>
@@ -622,21 +590,20 @@ html, body {
     </section>
 
     <!-- W | Word Work -->
-    <section class="dwell-column col-wordwork" onclick="expandColumn(this)">
+    <section class="dwell-column col-wordwork" onclick="handleColumnClick(this, event)">
       <div class="col-header">
         <div class="col-header-left">
           <span class="col-letter-target">W</span>
           <span class="col-vertical-title">Word Work</span>
         </div>
-        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Two &bull; Word Work</span>
-        <h2 class="col-headline">Zoom into the structure and words.</h2>
+        <h2 class="col-headline">Inspect the text up close.</h2>
         <ul class="col-prompt-list">
-          <li>Look for repeated words, lists, comparisons, and structural emphasis.</li>
-          <li>Look up unfamiliar or theological terms for clarity.</li>
-          <li>Summarize the whole text in 1–2 precise sentences.</li>
+          <li>Underline repeated words, lists, comparisons, and key connecting words.</li>
+          <li>Look up simple definitions for any words that seem unfamiliar or confusing.</li>
+          <li>Write out the main point of the passage in one clear sentence.</li>
         </ul>
         <div class="col-nav-cue" onclick="goToNextStep(event, '.col-expand')">
           <span class="cue-label">Advance to Expand</span>
@@ -648,21 +615,20 @@ html, body {
     </section>
 
     <!-- E | Expand -->
-    <section class="dwell-column col-expand" onclick="expandColumn(this)">
+    <section class="dwell-column col-expand" onclick="handleColumnClick(this, event)">
       <div class="col-header">
         <div class="col-header-left">
           <span class="col-letter-target">E</span>
           <span class="col-vertical-title">Expand</span>
         </div>
-        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Three &bull; Expand</span>
-        <h2 class="col-headline">Connect the passage to the larger story.</h2>
+        <h2 class="col-headline">Connect to the bigger picture.</h2>
         <ul class="col-prompt-list">
-          <li>Compare multiple translations to clarify confusing phrases.</li>
-          <li>Read the surrounding chapters to see the broader literary arc.</li>
-          <li>Follow 1–2 cross-references into scripture.</li>
+          <li>Read the surrounding chapters to see how this passage fits into the whole book.</li>
+          <li>Compare two different translations to clear up tricky sentences.</li>
+          <li>Follow 1–2 related verses in the margins to see where else this idea appears.</li>
         </ul>
         <div class="col-nav-cue" onclick="goToNextStep(event, '.col-learn')">
           <span class="cue-label">Advance to Learn</span>
@@ -674,21 +640,20 @@ html, body {
     </section>
 
     <!-- L | Learn -->
-    <section class="dwell-column col-learn" onclick="expandColumn(this)">
+    <section class="dwell-column col-learn" onclick="handleColumnClick(this, event)">
       <div class="col-header">
         <div class="col-header-left">
           <span class="col-letter-target">L</span>
           <span class="col-vertical-title">Learn</span>
         </div>
-        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Four &bull; Learn</span>
-        <h2 class="col-headline">Cross the bridge to eternal truth.</h2>
+        <h2 class="col-headline">Discover the timeless truth.</h2>
         <ul class="col-prompt-list">
-          <li>How would the original audience have understood this?</li>
-          <li>What does this reveal about God's unchanging character?</li>
-          <li>Verify your conclusions with others in community.</li>
+          <li>What was the main takeaway for the very first people who read this?</li>
+          <li>What does this passage teach us about who God is and how He works?</li>
+          <li>Now check commentaries, study notes, or talk with others to verify what you learned.</li>
         </ul>
         <div class="col-nav-cue" onclick="goToNextStep(event, '.col-live')">
           <span class="cue-label">Advance to Live</span>
@@ -700,63 +665,45 @@ html, body {
     </section>
 
     <!-- L | Live -->
-    <section class="dwell-column col-live" onclick="expandColumn(this)">
+    <section class="dwell-column col-live" onclick="handleColumnClick(this, event)">
       <div class="col-header">
         <div class="col-header-left">
           <span class="col-letter-target">L</span>
           <span class="col-vertical-title">Live</span>
         </div>
-        <svg class="col-expand-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
       </div>
       <div class="col-expanded-body">
         <span class="col-step-tag">Step Five &bull; Live</span>
-        <h2 class="col-headline">Let truth transform daily life.</h2>
+        <h2 class="col-headline">Put the truth into practice.</h2>
         <ul class="col-prompt-list">
-          <li>What cultural or personal lies are challenged by this truth?</li>
-          <li>How will this shape your prayers, words, and actions today?</li>
+          <li>What everyday thoughts or habits does this truth challenge?</li>
+          <li>What is one concrete way this truth will change your words and actions today?</li>
         </ul>
-        <div class="col-nav-cue" onclick="goToNextStep(event, '.col-intro')">
-          <span class="cue-label">Return to Start</span>
-          <span class="cue-arrow">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </span>
-        </div>
       </div>
     </section>
 
   </main>
 
-<!-- Compact UI Style Tester -->
-<div class="tester-wrap">
-  <div class="tester-panel" id="testerPanel">
-    <div class="tester-panel-head">
-      <span class="tester-title">UI Design Suite</span>
-    </div>
-    <div class="tester-tabs">
-      <button type="button" class="tester-tab active" id="tabBtnStyles" onclick="switchTesterTab('styles')">Letter Styles</button>
-      <button type="button" class="tester-tab" id="tabBtnColors" onclick="switchTesterTab('colors')">Colors</button>
-    </div>
-
-    <!-- Tab 1: Refined Letter Treatments -->
-    <div id="panelStyles">
-      <div class="tester-list" id="styleList"></div>
-    </div>
-
-    <!-- Tab 2: Colorways -->
-    <div id="panelColors" style="display: none;">
+  <!-- Style Tester Floating Widget -->
+  <div class="tester-wrap" onclick="event.stopPropagation()">
+    <div class="tester-panel" id="testerPanel">
+      <div class="tester-panel-head">
+        <span class="tester-title">Curated Palettes</span>
+      </div>
       <div class="tester-list" id="paletteList"></div>
     </div>
-  </div>
 
-  <button type="button" class="tester-toggle-btn" onclick="toggleTester()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-    Style Tester
-  </button>
-</div>
+    <button type="button" class="tester-toggle-btn" onclick="toggleTester(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      Palette Variations
+    </button>
+  </div>
 
 <script>
 /* ── Navigation Accordion ── */
-function expandColumn(selectedCol) {
+function handleColumnClick(selectedCol, event) {
+  if (event && event.target.closest('.tester-wrap')) return;
+  
   const isMobile = window.innerWidth <= 768;
   const isAlreadyExpanded = selectedCol.classList.contains('is-expanded');
   const allCols = document.querySelectorAll('.dwell-column');
@@ -775,64 +722,121 @@ function goToNextStep(event, selector) {
     const allCols = document.querySelectorAll('.dwell-column');
     allCols.forEach(col => col.classList.remove('is-expanded'));
     nextCol.classList.add('is-expanded');
-    if (window.innerWidth <= 768) {
-      nextCol.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   }
 }
 
-/* ── Refined Letter Style Treatments ── */
-const letterStyles = [
-  { id: "style-overlay", name: "1. Mixed-Blend Overlay", tag: "Architectural" },
-  { id: "style-wireframe", name: "2. Outlined Wireframe", tag: "Stroke" },
-  { id: "style-serif", name: "3. Monograph Italic", tag: "Editorial" },
-  { id: "style-solid", name: "4. Clean Solid Drop-Cap", tag: "Minimal" },
-  { id: "style-glass", name: "5. Frosted Glass Pill", tag: "Badge" },
-  { id: "style-stamp", name: "6. Contrast Circle Stamp", tag: "Stamp" }
+/* ── Curated Palettes ── */
+const palettes = [
+  {
+    id: "golden-hour-horizon",
+    name: "1. Golden Hour Horizon",
+    tag: "Warm Sunset",
+    tokens: {
+      "--ink": "#211a24",
+      "--paper": "#faf7f5",
+      "--paper-dim": "#f5e9e2",
+      "--d-discover": "#e28a5c", // Golden Apricot
+      "--d-wordwork": "#d76b65", // Warm Coral
+      "--d-expand": "#9e6488",   // Dusty Violet
+      "--d-learn": "#5d587e",    // Twilight Indigo
+      "--d-live": "#2d324f"      // Midnight Blue
+    }
+  },
+  {
+    id: "coastal-dusk-amber",
+    name: "2. Coastal Amber to Teal",
+    tag: "Sea Dusk",
+    tokens: {
+      "--ink": "#182326",
+      "--paper": "#f7faf9",
+      "--paper-dim": "#e8eeeb",
+      "--d-discover": "#e08d53", // Low Sun Amber
+      "--d-wordwork": "#c27471", // Rose Sand
+      "--d-expand": "#7d6e87",   // Sea Fog Mauve
+      "--d-learn": "#4c6674",    // Slate Water
+      "--d-live": "#223942"      // Deep Trench Teal
+    }
+  },
+  {
+    id: "desert-clay-plum",
+    name: "3. Mojave Terracotta & Plum",
+    tag: "Earthy Dusk",
+    tokens: {
+      "--ink": "#241b1c",
+      "--paper": "#fbf8f5",
+      "--paper-dim": "#f3e7df",
+      "--d-discover": "#db7854", // Sunkissed Clay
+      "--d-wordwork": "#b85666", // Adobe Berry
+      "--d-expand": "#7c4e6e",   // Desert Plum
+      "--d-learn": "#4a425a",    // Shadow Slate
+      "--d-live": "#262232"      // Canyon Night
+    }
+  },
+  {
+    id: "autumn-canopy",
+    name: "4. Kyoto Maple & Moss",
+    tag: "Botanical Earth",
+    tokens: {
+      "--ink": "#1e221b",
+      "--paper": "#fafaf6",
+      "--paper-dim": "#eaece2",
+      "--d-discover": "#d97a53", // Persimmon
+      "--d-wordwork": "#a85458", // Maple Red
+      "--d-expand": "#6b5d6f",   // Muted Smoke
+      "--d-learn": "#556b57",    // Moss Green
+      "--d-live": "#253b2e"      // Deep Cedar
+    }
+  },
+  {
+    id: "moroccan-lapis",
+    name: "5. Moroccan Ochre & Lapis",
+    tag: "Rich Contrast",
+    tokens: {
+      "--ink": "#1c1822",
+      "--paper": "#faf7f3",
+      "--paper-dim": "#f2e7d8",
+      "--d-discover": "#df8f42", // Raw Ochre
+      "--d-wordwork": "#c85a4a", // Terracotta Rust
+      "--d-expand": "#7d4869",   // Fig Purple
+      "--d-learn": "#344e73",    // Deep Cobalt
+      "--d-live": "#1b253b"      // Lapis Night
+    }
+  },
+  {
+    id: "polar-twilight",
+    name: "6. Polar Aurora Dusk",
+    tag: "Cool Luminescence",
+    tokens: {
+      "--ink": "#141c22",
+      "--paper": "#f6f9fa",
+      "--paper-dim": "#e2eef1",
+      "--d-discover": "#e28669", // Sunset Coral
+      "--d-wordwork": "#a4719e", // Neon Mauve
+      "--d-expand": "#5a7a97",   // Glacier Blue
+      "--d-learn": "#45827e",    // Aurora Teal
+      "--d-live": "#1b333a"      // Abyssal Sea
+    }
+  }
 ];
 
-let activeStyleId = "style-overlay";
-
-/* ── Colorways Presets ── */
-const colorways = [
-  { id: "warm-clay-coastal", name: "Warm Clay & Sage", tag: "Current", tokens: { "--ink": "#22292b", "--paper": "#fdfbf7", "--paper-dim": "#f4e9d7", "--d-discover": "#6fa4af", "--d-wordwork": "#d97d55", "--d-expand": "#b8c4a9", "--d-learn": "#e5ac6b", "--d-live": "#456b77" } },
-  { id: "monastic-vellum", name: "Monastic Vellum", tag: "Oxford", tokens: { "--ink": "#1a1612", "--paper": "#f8f4ec", "--paper-dim": "#ede6d4", "--d-discover": "#8a2824", "--d-wordwork": "#c27835", "--d-expand": "#43604f", "--d-learn": "#b8964d", "--d-live": "#253444" } },
-  { id: "swiss-modern", name: "Swiss Modernism", tag: "Bauhaus", tokens: { "--ink": "#0a0a0a", "--paper": "#ffffff", "--paper-dim": "#f0f0f0", "--d-discover": "#2563eb", "--d-wordwork": "#dc2626", "--d-expand": "#059669", "--d-learn": "#f59e0b", "--d-live": "#7c3aed" } },
-  { id: "nordic-fog", name: "Nordic Fog", tag: "Ceramic", tokens: { "--ink": "#23272a", "--paper": "#f4f6f5", "--paper-dim": "#e3e8e5", "--d-discover": "#476a6f", "--d-wordwork": "#b87d6d", "--d-expand": "#6b8f85", "--d-learn": "#c99e6b", "--d-live": "#334149" } }
-];
-
-let activePaletteId = "warm-clay-coastal";
+let activePaletteId = "golden-hour-horizon";
 
 function renderTester() {
-  const styleList = document.getElementById("styleList");
-  if (styleList) {
-    styleList.innerHTML = "";
-    letterStyles.forEach(st => {
-      const card = document.createElement("div");
-      card.className = `tester-card ${st.id === activeStyleId ? 'active' : ''}`;
-      card.onclick = () => applyLetterStyle(st.id);
-      card.innerHTML = `
-        <div class="tester-card-name"><span>${st.name}</span><span class="tag">${st.tag}</span></div>
-      `;
-      styleList.appendChild(card);
-    });
-  }
-
   const palList = document.getElementById("paletteList");
   if (palList) {
     palList.innerHTML = "";
-    colorways.forEach(cw => {
+    palettes.forEach(pal => {
       const card = document.createElement("div");
-      card.className = `tester-card ${cw.id === activePaletteId ? 'active' : ''}`;
-      card.onclick = () => applyColorway(cw.id);
+      card.className = `tester-card ${pal.id === activePaletteId ? 'active' : ''}`;
+      card.onclick = (e) => { e.stopPropagation(); applyPalette(pal.id); };
       card.innerHTML = `
-        <div class="tester-card-name"><span>${cw.name}</span><span class="tag">${cw.tag}</span></div>
+        <div class="tester-card-name"><span>${pal.name}</span><span class="tag">${pal.tag}</span></div>
         <div class="tester-swatches">
-          <span style="background:${cw.tokens['--d-discover']}"></span>
-          <span style="background:${cw.tokens['--d-wordwork']}"></span>
-          <span style="background:${cw.tokens['--d-expand']}"></span>
-          <span style="background:${cw.tokens['--d-learn']}"></span>
-          <span style="background:${cw.tokens['--d-live']}"></span>
+          <span style="background:${pal.tokens['--d-discover']}"></span>
+          <span style="background:${pal.tokens['--d-wordwork']}"></span>
+          <span style="background:${pal.tokens['--d-expand']}"></span>
+          <span style="background:${pal.tokens['--d-learn']}"></span>
+          <span style="background:${pal.tokens['--d-live']}"></span>
         </div>
       `;
       palList.appendChild(card);
@@ -840,15 +844,8 @@ function renderTester() {
   }
 }
 
-function applyLetterStyle(styleClass) {
-  letterStyles.forEach(s => document.body.classList.remove(s.id));
-  document.body.classList.add(styleClass);
-  activeStyleId = styleClass;
-  renderTester();
-}
-
-function applyColorway(id) {
-  const selected = colorways.find(c => c.id === id);
+function applyPalette(id) {
+  const selected = palettes.find(c => c.id === id);
   if (!selected) return;
   activePaletteId = id;
   const root = document.documentElement;
@@ -858,23 +855,14 @@ function applyColorway(id) {
   renderTester();
 }
 
-function switchTesterTab(tab) {
-  document.getElementById("panelStyles").style.display = tab === "styles" ? "block" : "none";
-  document.getElementById("panelColors").style.display = tab === "colors" ? "block" : "none";
-  
-  document.getElementById("tabBtnStyles").classList.toggle("active", tab === "styles");
-  document.getElementById("tabBtnColors").classList.toggle("active", tab === "colors");
-}
-
-function toggleTester() {
+function toggleTester(event) {
+  if (event) event.stopPropagation();
   document.getElementById("testerPanel").classList.toggle("open");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   renderTester();
-  if (window.innerWidth <= 768) {
-    document.querySelectorAll('.dwell-column').forEach(c => c.classList.remove('is-expanded'));
-  }
+  applyPalette("golden-hour-horizon");
 });
 </script>
 
